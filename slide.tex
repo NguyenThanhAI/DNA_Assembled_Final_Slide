@@ -1,0 +1,146 @@
+%% This Beamer template is based on the one found here: https://github.com/sanhacheong/stanford-beamer-presentation, and edited to be used for Stanford ARM Lab
+
+\documentclass[10pt]{beamer}
+%\mode<presentation>{}
+
+\usepackage{media9}
+\usepackage{amssymb,amsmath,amsthm,enumerate}
+\usepackage{mathtools}
+\usepackage[utf8]{inputenc}
+\usepackage{array}
+\usepackage[parfill]{parskip}
+\usepackage[utf8]{vietnam}
+\usepackage{graphicx,animate}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{bm}
+\usepackage{amsfonts,amscd}
+\usepackage[]{units}
+\usepackage{listings}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{tcolorbox}
+\usepackage{physics}
+\usepackage{movie15}
+% Enable colored hyperlinks
+\hypersetup{colorlinks=true}
+
+\usefonttheme{professionalfonts}
+
+% The following three lines are for crossmarks & checkmarks
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+
+% Numbered captions of tables, pictures, etc.
+\setbeamertemplate{caption}[numbered]
+\usepackage{media9} 
+%\usepackage[superscript,biblabel]{cite}
+%\usepackage{algorithmic}
+%\usepackage{algorithm2e}
+%\usepackage{algpseudocode}
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+%\usepackage{algorithm}
+%\usepackage{algorithmic}
+%\usepackage{caption}
+\usepackage[font=scriptsize,justification=centering]{caption}
+%\usepackage{xcolor}
+\usepackage{array}
+%\renewcommand{\thealgocf}{}
+
+\usepackage[natbib,backend=biber,style=ieee, sorting=ynt]{biblatex}
+\bibliography{ref.bib}
+
+\usepackage[acronym]{glossaries}
+
+\usepackage{graphicx}
+\graphicspath{{./figures}}
+\usepackage{hyperref}
+
+\setbeamertemplate{theorems}[numbered]
+\theoremstyle{remark}
+\newtheorem{dl}{Định lý}
+\newtheorem{md}{Mệnh đề}
+\newtheorem{bd}{Bổ đề}
+\newtheorem{dn}{Định nghĩa}
+\newtheorem{hq}{Hệ quả}
+%\theoremstyle{definition}
+
+\numberwithin{algocf}{section}
+\numberwithin{equation}{section}
+\numberwithin{dl}{section}
+\numberwithin{figure}{section}
+
+
+%\newcommand{\empy}[1]{{\color{darkorange}\emph{#1}}}
+%\newcommand{\empr}[1]{{\color{cardinalred}\emph{#1}}}
+%\newcommand{\examplebox}[2]{
+%\begin{tcolorbox}[colframe=darkcardinal,colback=boxgray,title=#1]
+%#2
+%\end{tcolorbox}}
+
+%\usetheme{Stanford} 
+%\input{./style_files_stanford/my_beamer_defs.sty}
+\usetheme{Copenhagen}
+\usecolortheme{seahorse}
+%\logo{\includegraphics[height=0.5in]{logos/HUS-name.jpg}}
+
+\makeatletter
+\let\@@magyar@captionfix\relax
+\makeatother
+
+\title[Phương pháp tiếp cận lý thuyết đồ thị giải trình tự DNA]{Phương pháp tiếp cận \\ lý thuyết đồ thị giải trình tự DNA}
+
+\AtBeginSection[]
+{
+    \begin{frame}
+        \frametitle{Nội dung}
+        \tableofcontents[currentsection, subsectionstyle=show/show/hide]
+    \end{frame}
+}
+
+\setbeamertemplate{page number in head/foot}[totalframenumber]
+\setbeamertemplate{frametitle continuation}{}
+
+\begin{document}
+\author[Nguyễn Chí Thanh - Vũ Ngọc Đại - Vũ Minh Hưng - Lê Diệu Thúy]{
+	\begin{tabular}{c c}  
+    Nguyễn Chí Thanh & Vũ Ngọc Đại \\
+    \footnotesize \href{mailto:nguyenchithanh\_sdh21@hus.edu.vn}{nguyenchithanh\_sdh21@hus.edu.vn} & \footnotesize \href{mailto:vungocdai\_sdh21@hus.edu.vn}{vungocdai\_sdh21@hus.edu.vn} \\
+    Vũ Minh Hưng & Lê Diệu Thúy \\
+    \footnotesize \href{mailto:nguyenchithanh\_sdh21@hus.edu.vn}{nguyenchithanh\_sdh21@hus.edu.vn} & \footnotesize \href{mailto:nguyenchithanh\_sdh21@hus.edu.vn}{nguyenchithanh\_sdh21@hus.edu.vn}
+\end{tabular}
+\vspace{-4ex}}
+
+\institute{
+	\vskip 5pt
+	\begin{figure}
+		\centering
+		\begin{subfigure}[t]{0.5\textwidth}
+			\centering
+			\includegraphics[height=0.75in]{logos/HUS-logo.jpg}
+		\end{subfigure}%
+		~ 
+		\begin{subfigure}[t]{0.5\textwidth}
+			\centering
+			\includegraphics[height=0.75in]{logos/MIM-logo.png}
+		\end{subfigure}
+	\end{figure}
+	\vskip 5pt	
+	Đại học Quốc Gia Hà Nội \\
+	Trường đại học Khoa học tự nhiên\\
+	Khoa Toán - Cơ - Tin học
+	\vskip 3pt
+}
+
+%\begin{noheadline}
+\begin{frame} \maketitle \end{frame}
+%\end{noheadline}
+    
+\setbeamertemplate{itemize items}[default]
+\setbeamertemplate{itemize subitem}[circle]
+
+\begin{frame}{Nội dung}
+    \tableofcontents[hidesubsections]
+\end{frame}
+\end{document}
