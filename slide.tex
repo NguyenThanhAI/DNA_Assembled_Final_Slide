@@ -340,4 +340,78 @@
         \caption{COMPUTE\_DEGREE}
     \end{algorithm}
 \end{frame}
+
+\begin{frame}{Thuật toán cập nhật vị trí các cạnh trong một Read khi x là cạnh kết thúc Read}
+    \begingroup
+        \scalebox{0.8}{
+            \begin{minipage}{1.2\linewidth}
+                \begin{algorithm}[H]
+                    \DontPrintSemicolon
+                    \KwIn{$read:$ \KwSty{Read}$, x:$ \KwSty{Edge} $, z:$ \KwSty{Edge}}
+                    $pos\_of\_edges:$ \KwSty{List \lbrack int \rbrack} $\gets list(read.position\_to\_edge.keys())$\;
+                    \If{$read.position\_to\_edge \lbrack pos\_of\_edges \lbrack -1 \rbrack \rbrack = x$}{
+                        $read.position\_to\_edge \lbrack pos\_of\_edges \lbrack -1 \rbrack \rbrack \gets z$\;
+
+                        \For{$i \gets 0$ \KwTo $read.edges.length - 1$}{
+                            \If{$read.edges \lbrack i \rbrack = x$}{
+                                $read.edges \lbrack i \rbrack \gets z$\;
+                            }
+                        }
+
+                        $z.reads.add(read)$\;
+
+                        $read.add\_edge\_position(x=x, z=x, position=pos\_of\_edges \lbrack -1 \rbrack)$\;
+
+                        \If{$read.edge\_to\_positions \lbrack x \rbrack.length = 0$} {
+                            \KwSty{del} $read.edge\_to\_positions \lbrack x \rbrack$\;
+                            \If{$read \in x.reads$} {
+                                $x.reads.remove(read)$\;
+                            }
+                        }
+                        \Return{$true$}\;
+                    }
+                    \Return{$false$}\;
+                    \caption{CHANGE\_X}\;
+                \end{algorithm}
+            \end{minipage}
+        }
+    \endgroup
+\end{frame}
+
+\begin{frame}{Thuật toán cập nhật vị trí các cạnh trong một Read khi y là cạnh bắt đầu Read}
+    \begingroup
+        \scalebox{0.8}{
+            \begin{minipage}{1.2\linewidth}
+                \begin{algorithm}[H]
+                    \DontPrintSemicolon
+                    \KwIn{$read:$ \KwSty{Read}$, x:$ \KwSty{Edge} $, z:$ \KwSty{Edge}}
+                    $pos\_of\_edges:$ \KwSty{List \lbrack int \rbrack} $\gets list(read.position\_to\_edge.keys())$\;
+                    \If{$read.position\_to\_edge \lbrack pos\_of\_edges \lbrack 0 \rbrack \rbrack = y$}{
+                        $read.position\_to\_edge \lbrack pos\_of\_edges \lbrack 0 \rbrack \rbrack \gets z$\;
+
+                        \For{$i \gets 0$ \KwTo $read.edges.length - 1$}{
+                            \If{$read.edges \lbrack i \rbrack = y$}{
+                                $read.edges \lbrack i \rbrack \gets z$\;
+                            }
+                        }
+
+                        $z.reads.add(read)$\;
+
+                        $read.add\_edge\_position(x=y, z=x, position=pos\_of\_edges \lbrack 0 \rbrack)$\;
+
+                        \If{$read.edge\_to\_positions \lbrack y \rbrack.length = 0$} {
+                            \KwSty{del} $read.edge\_to\_positions \lbrack y \rbrack$\;
+                            \If{$read \in y.reads$} {
+                                $y.reads.remove(read)$\;
+                            }
+                        }
+                        \Return{$true$}\;
+                    }
+                    \Return{$false$}\;
+                    \caption{CHANGE\_Y}\;
+                \end{algorithm}
+            \end{minipage}
+        }
+    \endgroup
+\end{frame}
 \end{document}
