@@ -143,4 +143,124 @@
 \begin{frame}{Nội dung}
     \tableofcontents[hidesubsections]
 \end{frame}
+
+\section{Thực nghiệm}
+
+\begin{frame}{Thuật toán xác định các đoạn chồng lấn}
+    \begin{algorithm}[H]
+        \DontPrintSemicolon
+        \KwIn{Chuỗi $str\_1$ và $str\_2$, đoạn ngắn nhất trùng để hai đoạn được xem là có chồng $min\_length$}
+        $pos \gets -1$\;
+        \For{$i \gets min\_length$ \KwTo $\min(str\_1.length, str\_2.length)$}{
+            $suff \gets str\_1 \lbrack -i: \rbrack$\;
+            $pref \gets str\_2 \lbrack :i \rbrack$\;
+            \If{$suff = pref$}{
+                $pos \gets i$\;
+            }
+        }
+        \Return{$pos$}\;
+        \caption{OVERLAP}
+    \end{algorithm}
+\end{frame}
+
+
+\begin{frame}{Thuật toán xác định các đoạn chồng lấn}
+    \begingroup
+        \scalebox{0.75}{
+            \begin{minipage}{1.2\linewidth}
+                \begin{algorithm}[H]
+                    \DontPrintSemicolon
+                    \KwIn{Tập các read $read\_list$, $min\_length$}
+                    \While{$read\_list.length > 0$}{
+                        $first \gets read\_list.pop(0)$\;
+                        $the\_rest \gets read\_list.copy()$\;
+                        \ForEach{$second \in the\_rest$}{
+                            $first\_pos \gets OVERLAP(first.sequence, second.sequence, min\_length)$\;
+                            $second\_pos \gets OVERLAP(second.sequence, first.sequence, min\_length)$\;
+            
+                            \If{$first\_pos \neq -1$}{
+                                $first.front\_of \lbrack second \rbrack \gets (first.length - first\_pos, first\_pos)$\;
+                                $second.behind\_of \lbrack first \rbrack \gets (first.length - first\_pos, first\_pos)$\;
+                            }
+            
+                            \If{$second\_pos \neq -1$}{
+                                $second.front\_of \lbrack first \rbrack \gets (second.length - second\_pos, second\_pos)$\;
+                                $first.behind\_of \lbrack second \rbrack \gets (second.length - second\_pos, second\_pos)$\;
+                            }
+                        }
+                    }
+                    \caption{ALIGN\_READ}
+                \end{algorithm}
+            \end{minipage}
+        }
+    \endgroup
+\end{frame}
+
+\begin{frame}{Thuật toán xác định bội cạnh}
+    \begingroup
+        \scalebox{0.65}{
+            \begin{minipage}{1.2\linewidth}
+                \begin{algorithm}[H]
+                    \DontPrintSemicolon
+                    \KwIn{$read, edge, i$ là vị trí của ký tự đầu tiên của $edge$ trong $read$}
+                    $exist \gets false$\;
+                    $overlap\_reads \gets read.front\_of$\;
+                    \ForEach{$over\_read \in overlap\_reads$}{
+                        $pos:$\KwSty{Tuple \lbrack int, int \rbrack} $\gets overlap\_reads \lbrack over\_read \rbrack$\;
+                        \If{$i \geq pos \lbrack 0 \rbrack $}{
+                            \If{$over\_read \in edge.position\_in\_read$}{
+                                $position\_in\_overlap\_read \gets edge.position\_in\_read \lbrack over\_read \rbrack$\;
+                                \ForEach{$position \in position\_in\_overlap\_read$}{
+                                    \If{$position + edge.sequence.length \leq pos \lbrack 1 \rbrack$}{
+                                        $exist \gets true$\;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    $overlap\_reads \gets read.behind\_of$\;
+                    \ForEach{$over\_read \in overlap\_reads$}{
+                        $pos:$\KwSty{Tuple \lbrack int, int \rbrack} $\gets overlap\_reads \lbrack over\_read \rbrack$\;
+                        \If{$i + edge.sequence.length \leq pos \lbrack 1 \rbrack $}{
+                            \If{$over\_read \in edge.position\_in\_read$}{
+                                $position\_in\_overlap\_read \gets edge.position\_in\_read \lbrack over\_read \rbrack$\;
+                                \ForEach{$position \in position\_in\_overlap\_read$}{
+                                    \If{$position \geq pos \lbrack 0 \rbrack$}{
+                                        $exist \gets true$\;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                \If{$!exist$} {
+                    $edge.multiplicities \gets edge.multiplicities + 1$\;
+                }
+                \caption{DETERMINE\_EDGE\_MULTIPLICITIES}
+                \end{algorithm}
+            \end{minipage}
+        }
+    \endgroup
+\end{frame}
+
+\begin{frame}{Thuật toán kiểm tra hai cạnh có phải là liền kề trong một Read hay không}
+    \begingroup
+        \scalebox{0.8}{
+            \begin{minipage}{1.2\linewidth}
+                \begin{algorithm}[H]
+                    \DontPrintSemicolon
+                    \KwIn{$read:$ \KwSty{Read}$, x:$ \KwSty{Edge} $, y:$ \KwSty{Edge}}
+                    $found\_xy:$ \KwSty{bool} $\gets true$\;
+                    $pos\_of\_edges:$ \KwSty{List \lbrack int \rbrack} $\gets list(read.position\_to\_edge.keys())$\;
+                    \For{$i \gets 0$ \KwTo $pos\_of\_edges.length - 1$}{
+                        \If{$read.position\_to\_edge \lbrack pos\_of\_edges \lbrack i \rbrack \rbrack = x \cap read.position\_to\_edge \lbrack pos\_of\_edges \lbrack i+1 \rbrack \rbrack = y$}{
+                            $found\_xy \gets true$\;
+                        }
+                    }
+                    \Return{$found\_xy$}
+                    \caption{CHECK\_CONSECUTIVE\_EDGES}
+                \end{algorithm}
+            \end{minipage}
+        }
+    \endgroup  
+\end{frame}
 \end{document}
