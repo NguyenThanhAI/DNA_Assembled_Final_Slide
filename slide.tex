@@ -414,4 +414,30 @@
         }
     \endgroup
 \end{frame}
+
+\begin{frame}{Thuật toán kiểm tra đồ thị Euler}
+    \begin{algorithm}[H]
+        \DontPrintSemicolon
+        \KwIn{$vertex\_list:$ \KwSty{List \lbrack Vertex \rbrack}}
+        $diff\_list:$ \KwSty{List \lbrack int \rbrack} $\gets \emptyset$\;
+        \ForEach{$vertex \in vertex\_list$}{
+            $diff\_mul \gets vertex.compute_degree()$\;
+            \If{$diff\_mul = 0$} {
+                $continue$\;
+            } \Else {
+                \If{$\lvert diff\_mul \rvert \geq 2$} {
+                    \Return{$false$}\;
+                }
+                \Else {
+                    $diff\_list.add(diff\_mul)$\;
+                }
+            }
+        }
+        \If{$diff\_list.length = 2 \cap diff\_list \lbrack 0 \rbrack \times diff\_list \lbrack 1 \rbrack =-1 $} {
+            \Return{$true$}\;
+        } \Else{
+            \Return{$false$}\;
+        }
+    \end{algorithm}
+\end{frame}
 \end{document}
