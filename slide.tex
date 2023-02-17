@@ -263,4 +263,81 @@
         }
     \endgroup  
 \end{frame}
+
+\begin{frame}{Thuật toán cập nhật vị trí các cạnh trong một Read khi x và y là liền kề}
+    \begingroup
+        \scalebox{0.4}{
+            \begin{minipage}{1.2\linewidth}
+                \begin{algorithm}[H]
+                    \DontPrintSemicolon
+                    \KwIn{$read:$ \KwSty{Read}$, x:$ \KwSty{Edge} $, y:$ \KwSty{Edge} $, z:$ \KwSty{Edge}}
+                    $found\_xy:$ \KwSty{bool} $\gets true$\;
+                    $pos\_of\_edges:$ \KwSty{List \lbrack int \rbrack} $\gets list(read.position\_to\_edge.keys())$\;
+                    \For{$i \gets 0$ \KwTo $pos\_of\_edges.length - 1$}{
+                        \If{$read.position\_to\_edge \lbrack pos\_of\_edges \lbrack i \rbrack \rbrack = x \cap read.position\_to\_edge \lbrack pos\_of\_edges \lbrack i+1 \rbrack \rbrack = y$}{
+                            $found\_xy \gets true$\;
+                            $read.position\_to\_edge \lbrack pos\_of\_edges \lbrack i \rbrack \rbrack \gets z$\;
+                            $read.position\_to\_edge \lbrack pos\_of\_edges \lbrack i+1 \rbrack \gets null$\;
+                            \For{$j \gets 0$ \KwTo $read.edges.length$}{
+                                \If{$read.edges \lbrack j \rbrack = x$}{
+                                    $read.edges \lbrack j \rbrack \gets z$\;
+                                }
+                                \If{$read.edges \lbrack j \rbrack = y$}{
+                                    $read.edges \lbrack j \rbrack \gets null$\;
+                                }
+                            }
+                            $z.reads.add(read)$\;
+                            $read.add\_edge\_position(x=x, z=z, position=pos\_of\_edges \lbrack i \rbrack)$\;
+                            $read.add\_edge\_position(x=y, z=z, position=pos\_of\_edges \lbrack i+1 \rbrack, replace_pos=False)$\;
+
+                            \If{$read.edge\_to\_positions \lbrack x \rbrack.length = 0$}{
+                                \KwSty{del} $read.edge\_to\_positions \lbrack x \rbrack$\;
+                                \If{$read \in x.reads$}{
+                                    $x.reads.remove(read)$\;
+                                }
+                            }
+                            \If{$read.edge\_to\_positions \lbrack y \rbrack.length = 0$}{
+                                \KwSty{del} $read.edge\_to\_positions \lbrack y \rbrack$\;
+                                \If{$read \in y.reads$}{
+                                    $y.reads.remove(read)$\;
+                                }
+                            }
+                        }
+                    }
+                    $edge\_list \gets \emptyset$\;
+                    \ForEach{$e \in read.edges$}{
+                        \If{$e neq null$} {
+                            $edge\_list.add(e)$\;
+                        }
+                    }
+                    $read.edges \gets edge\_list$\;
+                    \ForEach{$pos \in pos\_of\_edges$}{
+                        \If{$read.position\_to\_edge \lbrack pos \rbrack = null$} {
+                            \KwSty{del} $read.position\_to\_edge \lbrack pos \rbrack$\;
+                        }
+                    }
+                    \Return{$found\_xy$}\;
+                    \caption{CHANGE\_XY}
+                \end{algorithm}
+            \end{minipage}
+        }
+    \endgroup
+\end{frame}
+
+\begin{frame}{Thuật toán xác định chênh lệch bậc ra và bậc vào của một đỉnh}
+    \begin{algorithm}[H]
+        \DontPrintSemicolon
+        \KwIn{$vertex:$ \KwSty{Vertex}}
+        $in\_dgree:$ \KwSty{int} $\gets 0$\;
+        \ForEach{$in\_edge \in vertex.in\_edges$}{
+            $in\_degree \gets in\_degree + in\_edge.multiplicities$\;
+        }
+        $out\_dgree:$ \KwSty{int} $\gets 0$\;
+        \ForEach{$out\_edge \in vertex.out\_edges$}{
+            $out\_degree \gets out\_degree + out\_edge.multiplicities$\;
+        }
+        \Return{$out\_degree - in\_degree$}\;
+        \caption{COMPUTE\_DEGREE}
+    \end{algorithm}
+\end{frame}
 \end{document}
