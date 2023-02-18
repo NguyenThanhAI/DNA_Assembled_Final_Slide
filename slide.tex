@@ -581,4 +581,53 @@
         }
     \endgroup
 \end{frame}
+    
+\begin{frame}{Thuật toán merge các cạnh cùng bội}
+    \begingroup
+        \scalebox{0.5}{
+            \begin{minipage}{2\linewidth}
+                \begin{algorithm}[H]
+                    \DontPrintSemicolon
+                    \KwIn{graph: \KwSty{Graph}, x: \KwSty{Edge}, y: \KwSty{Edge}}
+                    in\_vertex: \KwSty{Vertex} $\gets$ x.in\_vertex\;
+                    mid\_vertex: \KwSty{Vertex} $\gets$ x.out\_vertex\;
+                    out\_vertex: \KwSty{Vertex} $\gets$ y.out\_vertex\;
+                    
+                    \If{in\_vertex.out\_edges.length = 0 $\cup$ mid\_vertex.in\_edges.length = 0 $\cup$ mid\_vertex.out\_edges.length = 0 $\cup$ out\_vertex.in\_edges.length = 0} {
+                        \Return{null}\;
+                    }
+                    seq: \KwSty{str} $\gets$ x.sequence + y.sequence[k-1:]
+
+                    \If{seq $\in$ graph.edge\_dict}{
+                        z: \KwSty{Edge} $\gets$ graph.edge\_dict[seq]\;
+                    } \Else{
+                        z: \KwSty{Edge} $\gets$ new\_edge(in\_vertex=in\_vertex, out\_vertex=out\_vertex, sequence=seq)\;
+                    }
+
+                    z.multiplicities $\gets$ x.multiplicities\;
+
+                    \If{x $\in$ in\_vertex.out\_edges} {
+                        in\_vertex.out\_edges.remove(x)\;
+                    }
+                    \If{x $\in$ mid\_vertex.in\_edges} {
+                        mid\_vertex.in\_edges.remove(x)\;
+                    }
+                    \If{y $\in$ mid\_vertex.out\_edges} {
+                        mid\_vertex.out\_edges.remove(y)\;
+                    }
+                    \If{y $\in$ out\_vertex.in\_edges} {
+                        out\_vertex.in\_edges.remove(y)\;
+                    }
+                    \ForEach{read $\in$ graph.read\_list}{
+                        read.change\_xy(x=x, y=x, z=z)\;
+                        read.change\_x(x=x, z=z)\;
+                        read.change\_y(y=y, z=z)\;
+                    }
+                    \Return{z}\;
+                    \caption{MERGE}
+                \end{algorithm}
+            \end{minipage}
+        }
+    \endgroup
+\end{frame}
 \end{document}
