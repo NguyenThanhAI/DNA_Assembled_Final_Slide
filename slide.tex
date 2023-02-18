@@ -805,4 +805,41 @@
     \endgroup
 \end{frame}
 
+\begin{frame}{Thuật toán xóa các đỉnh và cạnh sau khi merge các cạnh}
+    \begingroup
+        \scalebox{0.8}{
+            \begin{minipage}{1.5\linewidth}
+                \begin{algorithm}[H]
+                    \DontPrintSemicolon
+                    \KwIn{graph: \KwSty{Graph}}
+                    to\_remove\_vertex: \KwSty{List[Vertex]} $\gets \emptyset$\;
+                    \ForEach{vertex $\in$ graph.vertex\_list}{
+                        \If{vertex.in\_edges.length = 0 $\cap$ vertex.out\_edges.length = 0} {
+                            to\_remove\_vertex.add(vertex)\;
+                        }
+                    }
+            
+                    \ForEach{vertex $\in$ to\_remove\_vertex}{
+                        graph.vertex\_list.remove(vertex)\;
+                    }
+            
+                    to\_remove\_edge: \KwSty{List[Edge]} $\gets \emptyset$\;
+                    \ForEach{edge $\in$ graph.edge\_list}{
+                        \If{edge.reads.length = 0}{
+                            to\_remove\_edge.add(edge)\;
+                        } \ElseIf{edge.in\_vertex $\notin$ graph.vertex\_list} {
+                            to\_remove\_edge.add(edge)\;
+                        } \ElseIf{edge.out\_vertex $\notin$ graph.vertex\_list} {
+                            to\_remove\_edge.add(edge)\;
+                        }
+                    }
+                    \ForEach{edge $\in$ to\_remove\_edge}{
+                        graph.edge\_list.remove(edge)\;
+                    }
+                \end{algorithm}
+            \end{minipage}
+        }
+    \endgroup
+\end{frame}
+
 \end{document}
