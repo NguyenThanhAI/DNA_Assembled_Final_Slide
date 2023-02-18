@@ -149,16 +149,16 @@
 \begin{frame}{Thuật toán xác định các đoạn chồng lấn}
     \begin{algorithm}[H]
         \DontPrintSemicolon
-        \KwIn{Chuỗi $str\_1$ và $str\_2$, đoạn ngắn nhất trùng để hai đoạn được xem là có chồng $min\_length$}
-        $pos \gets -1$\;
-        \For{$i \gets min\_length$ \KwTo $\min(str\_1.length, str\_2.length)$}{
-            $suff \gets str\_1 \lbrack -i: \rbrack$\;
-            $pref \gets str\_2 \lbrack :i \rbrack$\;
-            \If{$suff = pref$}{
-                $pos \gets i$\;
+        \KwIn{Chuỗi str\_1: \KwSty{str} và str\_2: \KwSty{str}, đoạn ngắn nhất trùng để hai đoạn được xem là có chồng min\_length: \KwSty{int}}
+        pos: \KwSty{int} $\gets$ -1\;
+        \For{i $\gets$ min\_length \KwTo $\min$(str\_1.length, str\_2.length)}{
+            suff $\gets$ str\_1 [-i:]\;
+            pref $\gets$ str\_2 [:i]\;
+            \If{suff = pref}{
+                pos $\gets$ i\;
             }
         }
-        \Return{$pos$}\;
+        \Return{pos}\;
         \caption{OVERLAP}
     \end{algorithm}
 \end{frame}
@@ -170,22 +170,22 @@
             \begin{minipage}{1.2\linewidth}
                 \begin{algorithm}[H]
                     \DontPrintSemicolon
-                    \KwIn{Tập các read $read\_list$, $min\_length$}
-                    \While{$read\_list.length > 0$}{
-                        $first \gets read\_list.pop(0)$\;
-                        $the\_rest \gets read\_list.copy()$\;
-                        \ForEach{$second \in the\_rest$}{
-                            $first\_pos \gets OVERLAP(first.sequence, second.sequence, min\_length)$\;
-                            $second\_pos \gets OVERLAP(second.sequence, first.sequence, min\_length)$\;
+                    \KwIn{Tập các read read\_list: \KwSty{List[Read]}, min\_length: \KwSty{int}}
+                    \While{read\_list.length > 0}{
+                        first $\gets$ read\_list.pop(0)\;
+                        the\_rest $\gets$ read\_list.copy()\;
+                        \ForEach{second $\in$ the\_rest}{
+                            first\_pos $\gets$ OVERLAP(first.sequence, second.sequence, min\_length)\;
+                            second\_pos $\gets$ OVERLAP(second.sequence, first.sequence, min\_length)\;
             
-                            \If{$first\_pos \neq -1$}{
-                                $first.front\_of \lbrack second \rbrack \gets (first.length - first\_pos, first\_pos)$\;
-                                $second.behind\_of \lbrack first \rbrack \gets (first.length - first\_pos, first\_pos)$\;
+                            \If{first\_pos $\neq$ -1}{
+                                first.front\_of [second] $\gets$ (first.length - first\_pos, first\_pos)\;
+                                second.behind\_of [first] $\gets$ (first.length - first\_pos, first\_pos)\;
                             }
             
-                            \If{$second\_pos \neq -1$}{
-                                $second.front\_of \lbrack first \rbrack \gets (second.length - second\_pos, second\_pos)$\;
-                                $first.behind\_of \lbrack second \rbrack \gets (second.length - second\_pos, second\_pos)$\;
+                            \If{second\_pos $\neq$ -1}{
+                                second.front\_of [first] $\gets$ (second.length - second\_pos, second\_pos)\;
+                                first.behind\_of [second] $\gets$ (second.length - second\_pos, second\_pos)\;
                             }
                         }
                     }
