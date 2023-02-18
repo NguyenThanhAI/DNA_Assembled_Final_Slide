@@ -704,4 +704,105 @@
         }
     \endgroup
 \end{frame}
+
+\begin{frame}{Thuật toán kiểm tra hai cạnh cùng bội có thể merge được không}
+    \begingroup
+        \scalebox{0.6}{
+            \begin{minipage}{1.8\linewidth}
+                \begin{algorithm}[H]
+                    \DontPrintSemicolon
+                    \KwIn{graph: \KwSty{Graph}, vertex\_list: \KwSty{List[Vertex]}}
+                    \While{vertex\_list.length > 0}{
+                        vertex: \KwSty{int} $\gets$ vertex\_list.pop(0)\;
+                        num\_in\_edge: \KwSty{int} $\gets$ vertex.in\_edges.length\;
+                        num\_out\_edge: \KwSty{int} $\gets$ vertex.out\_edges.length\;
+
+                        \If{abs(vertex.compute\_degree()) = 1} {
+                            continue\;
+                        }
+
+                        \If{num\_in\_edge = 0 $\cap$ num\_out\_edge = 0} {
+                            continue\;
+                        }
+
+                        in\_edges: \KwSty{List[Edge]} = vertex.in\_edges.copy()\;
+                        out\_edges: \KwSty{List[Edge]} = vertex.out\_edges.copy()\;
+
+                        \If{num\_in\_edge = num\_out\_edge} {
+                            \ForEach{x $\in$ in\_edges}{
+                                x\_reads $\gets$ x.reads.copy()\;
+                                \ForEach{y $\in$ out\_edges} {
+                                    \If{x.multiplicities = y.multiplicities} {
+                                        \For{read $\in$ x\_reads} {
+                                            \If{read $\in$ y.reads} {
+                                                \If{read.check\_consecutive\_edges(x=x, y=y)} {
+                                                    \If{graph.merge(x=x, y=y)} {
+                                                        graph.clean()\;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    graph.clean()
+                    \caption{MERGE\_EQUAL\_MULTIPLICITIES\_EDGES}
+                \end{algorithm}
+            \end{minipage}
+        }
+    \endgroup
+\end{frame}
+
+\begin{frame}{Thuật toán kiểm tra hai cạnh khác bội có thể merge được không}
+    \begingroup
+        \scalebox{0.6}{
+            \begin{minipage}{1.8\linewidth}
+                \begin{algorithm}[H]
+                    \DontPrintSemicolon
+                    \KwIn{graph: \KwSty{Graph}, vertex\_list: \KwSty{List[Vertex]}}
+                    \While{vertex\_list.length > 0}{
+                        vertex: \KwSty{int} $\gets$ vertex\_list.pop(0)\;
+                        num\_in\_edge: \KwSty{int} $\gets$ vertex.in\_edges.length\;
+                        num\_out\_edge: \KwSty{int} $\gets$ vertex.out\_edges.length\;
+
+                        \If{abs(vertex.compute\_degree()) = 1} {
+                            continue\;
+                        }
+
+                        \If{num\_in\_edge = 0 $\cap$ num\_out\_edge = 0} {
+                            continue\;
+                        }
+
+                        in\_edges: \KwSty{List[Edge]} = vertex.in\_edges.copy()\;
+                        out\_edges: \KwSty{List[Edge]} = vertex.out\_edges.copy()\;
+
+                        \If{num\_in\_edge = num\_out\_edge} {
+                            \ForEach{x $\in$ in\_edges}{
+                                x\_reads $\gets$ x.reads.copy()\;
+                                \ForEach{y $\in$ out\_edges} {
+                                    \If{x.multiplicities = y.multiplicities} {
+                                        \For{read $\in$ x\_reads} {
+                                            \If{read $\in$ y.reads} {
+                                                \If{read.check\_consecutive\_edges(x=x, y=y)} {
+                                                    \If{graph.merge\_mul(x=x, y=y)} {
+                                                        graph.clean()\;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    graph.clean()
+                    \caption{MERGE\_UNEQUAL\_MULTIPLICITIES\_EDGES}
+                \end{algorithm}
+            \end{minipage}
+        }
+    \endgroup
+\end{frame}
+
 \end{document}
