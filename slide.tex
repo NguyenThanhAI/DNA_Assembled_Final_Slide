@@ -327,16 +327,16 @@
 \begin{frame}{Thuật toán xác định chênh lệch bậc ra và bậc vào của một đỉnh}
     \begin{algorithm}[H]
         \DontPrintSemicolon
-        \KwIn{$vertex:$ \KwSty{Vertex}}
-        $in\_dgree:$ \KwSty{int} $\gets 0$\;
-        \ForEach{$in\_edge \in vertex.in\_edges$}{
-            $in\_degree \gets in\_degree + in\_edge.multiplicities$\;
+        \KwIn{vertex: \KwSty{Vertex}}
+        in\_dgree: \KwSty{int} $\gets$ 0\;
+        \ForEach{in\_edge $\in$ vertex.in\_edges}{
+            in\_degree $\gets$ in\_degree + in\_edge.multiplicities\;
         }
-        $out\_dgree:$ \KwSty{int} $\gets 0$\;
-        \ForEach{$out\_edge \in vertex.out\_edges$}{
-            $out\_degree \gets out\_degree + out\_edge.multiplicities$\;
+        out\_dgree: \KwSty{int} $\gets$ 0\;
+        \ForEach{out\_edge $\in$ vertex.out\_edges}{
+            out\_degree $\gets$ out\_degree + out\_edge.multiplicities\;
         }
-        \Return{$out\_degree - in\_degree$}\;
+        \Return{out\_degree - in\_degree}\;
         \caption{COMPUTE\_DEGREE}
     \end{algorithm}
 \end{frame}
@@ -347,30 +347,30 @@
             \begin{minipage}{1.2\linewidth}
                 \begin{algorithm}[H]
                     \DontPrintSemicolon
-                    \KwIn{$read:$ \KwSty{Read}$, x:$ \KwSty{Edge} $, z:$ \KwSty{Edge}}
-                    $pos\_of\_edges:$ \KwSty{List \lbrack int \rbrack} $\gets list(read.position\_to\_edge.keys())$\;
-                    \If{$read.position\_to\_edge \lbrack pos\_of\_edges \lbrack -1 \rbrack \rbrack = x$}{
-                        $read.position\_to\_edge \lbrack pos\_of\_edges \lbrack -1 \rbrack \rbrack \gets z$\;
+                    \KwIn{read: \KwSty{Read}, x: \KwSty{Edge} , z: \KwSty{Edge}}
+                    pos\_of\_edges: \KwSty{List [int]} $\gets$ list(read.position\_to\_edge.keys())\;
+                    \If{read.position\_to\_edge[pos\_of\_edges[-1]] = x}{
+                        read.position\_to\_edge[pos\_of\_edges[-1]] $\gets$ z\;
 
-                        \For{$i \gets 0$ \KwTo $read.edges.length - 1$}{
-                            \If{$read.edges \lbrack i \rbrack = x$}{
-                                $read.edges \lbrack i \rbrack \gets z$\;
+                        \For{i $\gets$ 0 \KwTo read.edges.length - 1}{
+                            \If{read.edges [i] = x}{
+                                read.edges [i] $\gets$ z\;
                             }
                         }
 
-                        $z.reads.add(read)$\;
+                        z.reads.add(read)\;
 
-                        $read.add\_edge\_position(x=x, z=x, position=pos\_of\_edges \lbrack -1 \rbrack)$\;
+                        read.add\_edge\_position(x=x, z=x, position=pos\_of\_edges [-1])\;
 
-                        \If{$read.edge\_to\_positions \lbrack x \rbrack.length = 0$} {
-                            \KwSty{del} $read.edge\_to\_positions \lbrack x \rbrack$\;
-                            \If{$read \in x.reads$} {
-                                $x.reads.remove(read)$\;
+                        \If{read.edge\_to\_positions[x].length = 0} {
+                            \KwSty{del} read.edge\_to\_positions[x]\;
+                            \If{read $\in$ x.reads} {
+                                x.reads.remove(read)\;
                             }
                         }
-                        \Return{$true$}\;
+                        \Return{true}\;
                     }
-                    \Return{$false$}\;
+                    \Return{false}\;
                     \caption{CHANGE\_X}\;
                 \end{algorithm}
             \end{minipage}
@@ -384,30 +384,30 @@
             \begin{minipage}{1.2\linewidth}
                 \begin{algorithm}[H]
                     \DontPrintSemicolon
-                    \KwIn{$read:$ \KwSty{Read}$, x:$ \KwSty{Edge} $, z:$ \KwSty{Edge}}
-                    $pos\_of\_edges:$ \KwSty{List \lbrack int \rbrack} $\gets list(read.position\_to\_edge.keys())$\;
-                    \If{$read.position\_to\_edge \lbrack pos\_of\_edges \lbrack 0 \rbrack \rbrack = y$}{
-                        $read.position\_to\_edge \lbrack pos\_of\_edges \lbrack 0 \rbrack \rbrack \gets z$\;
+                    \KwIn{read: \KwSty{Read}, x: \KwSty{Edge} , z: \KwSty{Edge}}
+                    pos\_of\_edges: \KwSty{List [int]} $\gets$ list(read.position\_to\_edge.keys())\;
+                    \If{read.position\_to\_edge [pos\_of\_edges[0]] = y}{
+                        read.position\_to\_edge [pos\_of\_edges[0]] $\gets$ z\;
 
-                        \For{$i \gets 0$ \KwTo $read.edges.length - 1$}{
-                            \If{$read.edges \lbrack i \rbrack = y$}{
-                                $read.edges \lbrack i \rbrack \gets z$\;
+                        \For{i $\gets$ 0 \KwTo read.edges.length - 1}{
+                            \If{read.edges [i] = y}{
+                                read.edges [i] $\gets$ z\;
                             }
                         }
 
-                        $z.reads.add(read)$\;
+                        z.reads.add(read)\;
 
-                        $read.add\_edge\_position(x=y, z=x, position=pos\_of\_edges \lbrack 0 \rbrack)$\;
+                        read.add\_edge\_position(x=y, z=x, position=pos\_of\_edges[0])\;
 
-                        \If{$read.edge\_to\_positions \lbrack y \rbrack.length = 0$} {
-                            \KwSty{del} $read.edge\_to\_positions \lbrack y \rbrack$\;
-                            \If{$read \in y.reads$} {
-                                $y.reads.remove(read)$\;
+                        \If{read.edge\_to\_positions [y].length = 0} {
+                            \KwSty{del} read.edge\_to\_positions [y]\;
+                            \If{read $\in$ y.reads} {
+                                y.reads.remove(read)\;
                             }
                         }
-                        \Return{$true$}\;
+                        \Return{true}\;
                     }
-                    \Return{$false$}\;
+                    \Return{false}\;
                     \caption{CHANGE\_Y}\;
                 \end{algorithm}
             \end{minipage}
@@ -418,26 +418,27 @@
 \begin{frame}{Thuật toán kiểm tra đồ thị Euler}
     \begin{algorithm}[H]
         \DontPrintSemicolon
-        \KwIn{$vertex\_list:$ \KwSty{List \lbrack Vertex \rbrack}}
-        $diff\_list:$ \KwSty{List \lbrack int \rbrack} $\gets \emptyset$\;
-        \ForEach{$vertex \in vertex\_list$}{
-            $diff\_mul \gets vertex.compute_degree()$\;
-            \If{$diff\_mul = 0$} {
-                $continue$\;
+        \KwIn{vertex\_list: \KwSty{List [Vertex]}}
+        diff\_list: \KwSty{List [int]} $\gets \emptyset$\;
+        \ForEach{vertex $\in$ vertex\_list}{
+            diff\_mul $\gets$ vertex.compute\_degree()\;
+            \If{diff\_mul = 0} {
+                continue\;
             } \Else {
-                \If{$\lvert diff\_mul \rvert \geq 2$} {
-                    \Return{$false$}\;
+                \If{$\lvert$ diff\_mul $\rvert \geq$ 2} {
+                    \Return{false}\;
                 }
                 \Else {
-                    $diff\_list.add(diff\_mul)$\;
+                    diff\_list.add(diff\_mul)\;
                 }
             }
         }
-        \If{$diff\_list.length = 2 \cap diff\_list \lbrack 0 \rbrack \times diff\_list \lbrack 1 \rbrack =-1 $} {
-            \Return{$true$}\;
+        \If{diff\_list.length = 2 $\cap$ diff\_list [0] $\times$ diff\_list [1] = -1} {
+            \Return{true}\;
         } \Else{
-            \Return{$false$}\;
+            \Return{false}\;
         }
+        \caption{IS\_EULERIAN}
     \end{algorithm}
 \end{frame}
 
