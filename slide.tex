@@ -267,56 +267,56 @@
 \begin{frame}{Thuật toán cập nhật vị trí các cạnh trong một Read khi x và y là liền kề}
     \begingroup
         \scalebox{0.4}{
-            \begin{minipage}{1.2\linewidth}
+            \begin{minipage}{2.0\linewidth}
                 \begin{algorithm}[H]
                     \DontPrintSemicolon
-                    \KwIn{$read:$ \KwSty{Read}$, x:$ \KwSty{Edge} $, y:$ \KwSty{Edge} $, z:$ \KwSty{Edge}}
-                    $found\_xy:$ \KwSty{bool} $\gets true$\;
-                    $pos\_of\_edges:$ \KwSty{List \lbrack int \rbrack} $\gets list(read.position\_to\_edge.keys())$\;
-                    \For{$i \gets 0$ \KwTo $pos\_of\_edges.length - 1$}{
-                        \If{$read.position\_to\_edge \lbrack pos\_of\_edges \lbrack i \rbrack \rbrack = x \cap read.position\_to\_edge \lbrack pos\_of\_edges \lbrack i+1 \rbrack \rbrack = y$}{
-                            $found\_xy \gets true$\;
-                            $read.position\_to\_edge \lbrack pos\_of\_edges \lbrack i \rbrack \rbrack \gets z$\;
-                            $read.position\_to\_edge \lbrack pos\_of\_edges \lbrack i+1 \rbrack \gets null$\;
-                            \For{$j \gets 0$ \KwTo $read.edges.length$}{
-                                \If{$read.edges \lbrack j \rbrack = x$}{
-                                    $read.edges \lbrack j \rbrack \gets z$\;
+                    \KwIn{read: \KwSty{Read}, x: \KwSty{Edge}, y: \KwSty{Edge} , z: \KwSty{Edge}}
+                    found\_xy: \KwSty{bool} $\gets$ true\;
+                    pos\_of\_edges: \KwSty{List [int]} $\gets$ list(read.position\_to\_edge.keys())\;
+                    \For{i $\gets$ 0 \KwTo pos\_of\_edges.length - 1}{
+                        \If{read.position\_to\_edge [pos\_of\_edges[i]] = x $\cap$ read.position\_to\_edge [pos\_of\_edges [i+1]] = y}{
+                            found\_xy $\gets$ true\;
+                            read.position\_to\_edge [pos\_of\_edges[i]] $\gets$ z\;
+                            read.position\_to\_edge [pos\_of\_edges [i+1]] $\gets$ null\;
+                            \For{j $\gets$ 0 \KwTo read.edges.length}{
+                                \If{read.edges [j] = x}{
+                                    read.edges [j] $\gets$ z\;
                                 }
-                                \If{$read.edges \lbrack j \rbrack = y$}{
-                                    $read.edges \lbrack j \rbrack \gets null$\;
+                                \If{read.edges [j] = y}{
+                                    read.edges [j] $\gets$ null\;
                                 }
                             }
-                            $z.reads.add(read)$\;
-                            $read.add\_edge\_position(x=x, z=z, position=pos\_of\_edges \lbrack i \rbrack)$\;
-                            $read.add\_edge\_position(x=y, z=z, position=pos\_of\_edges \lbrack i+1 \rbrack, replace_pos=False)$\;
+                            z.reads.add(read)\;
+                            read.add\_edge\_position(x=x, z=z, position=pos\_of\_edges [i])\;
+                            read.add\_edge\_position(x=y, z=z, position=pos\_of\_edges [i+1], replace\_pos=false)\;
 
-                            \If{$read.edge\_to\_positions \lbrack x \rbrack.length = 0$}{
-                                \KwSty{del} $read.edge\_to\_positions \lbrack x \rbrack$\;
-                                \If{$read \in x.reads$}{
-                                    $x.reads.remove(read)$\;
+                            \If{read.edge\_to\_positions [x].length = 0}{
+                                \KwSty{del} read.edge\_to\_positions [x]\;
+                                \If{read $\in$ x.reads}{
+                                    x.reads.remove(read)\;
                                 }
                             }
-                            \If{$read.edge\_to\_positions \lbrack y \rbrack.length = 0$}{
-                                \KwSty{del} $read.edge\_to\_positions \lbrack y \rbrack$\;
-                                \If{$read \in y.reads$}{
-                                    $y.reads.remove(read)$\;
+                            \If{read.edge\_to\_positions [y].length = 0}{
+                                \KwSty{del} read.edge\_to\_positions [y]\;
+                                \If{read $\in$ y.reads}{
+                                    y.reads.remove(read)\;
                                 }
                             }
                         }
                     }
-                    $edge\_list \gets \emptyset$\;
-                    \ForEach{$e \in read.edges$}{
-                        \If{$e neq null$} {
-                            $edge\_list.add(e)$\;
+                    edge\_list $\gets \emptyset$\;
+                    \ForEach{e $\in$ read.edges}{
+                        \If{e $\neq$ null} {
+                            edge\_list.add(e)\;
                         }
                     }
-                    $read.edges \gets edge\_list$\;
-                    \ForEach{$pos \in pos\_of\_edges$}{
-                        \If{$read.position\_to\_edge \lbrack pos \rbrack = null$} {
-                            \KwSty{del} $read.position\_to\_edge \lbrack pos \rbrack$\;
+                    read.edges $\gets$ edge\_list\;
+                    \ForEach{pos $\in$ pos\_of\_edges}{
+                        \If{read.position\_to\_edge [pos] = null} {
+                            \KwSty{del} read.position\_to\_edge [pos]\;
                         }
                     }
-                    \Return{$found\_xy$}\;
+                    \Return{found\_xy}\;
                     \caption{CHANGE\_XY}
                 \end{algorithm}
             \end{minipage}
