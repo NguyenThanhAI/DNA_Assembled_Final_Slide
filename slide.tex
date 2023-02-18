@@ -514,4 +514,71 @@
         }
     \endgroup
 \end{frame}
+
+\begin{frame}{Thuật toán khởi tạo đồ thị de Bruijn}
+    \begingroup
+        \scalebox{0.4}{
+            \begin{minipage}{1.8\linewidth}
+                \begin{algorithm}[H]
+                    \DontPrintSemicolon
+                    \KwIn{seqs: \KwSty{List[str]}, k: \KwSty{int}}
+
+                    vertex\_list: \KwSty{List[Vertex]} $\gets \emptyset$\;
+                    vertex\_dict: \KwSty{Dict[str, Vertex]} $\gets \lbrace \rbrace$\;
+                    edge\_list: \KwSty{List[Edge]} $\gets \emptyset$\;
+                    edge\_dict: \KwSty{Dict[str, Edge]} $\gets \lbrace\rbrace$\;
+                    read\_list: \KwSty{List[Read]} $\gets \emptyset$\;
+
+                    \For{s $\gets$ 0 \KwTo seqs.length}{
+                        seq: \KwSty{str} $\gets$ seqs[s]\;
+                        read: \KwSty{Read} $\gets$ Read(sequence=seq, read\_id=s)\;
+                        read\_list.add(read)\; 
+                    }
+                    align\_read(min\_length=k)\;
+                    \ForEach{read $\in$ read\_list}{
+                        seq: \KwSty{str} $\gets$ read.sequence\;
+
+                        \For{i $\gets$ 0 \KwTo seq.length - k + 1}{
+                            k\_mer: \KwSty{str} $\gets$ seq[i:i+k]\;
+                            prefix: \KwSty{str} $\gets$ k\_mer[:k-1]\;
+                            suffix: \KwSty{str} $\gets$ k\_mer[1:]\;
+
+                            \If{prefix $\in$ vertex\_dict} {
+                                p\_vertex: \KwSty{Vertex} $\gets$ vertex\_dict[prefix]\;
+                            } \Else{
+                                p\_vertex: \KwSty{Vertex} $\gets$ new\_vertex(sequence=prefix)\;
+                            }
+
+                            \If{suffix $\in$ vertex\_dict} {
+                                s\_vertex: \KwSty{Vertex} $\gets$ vertex\_dict[suffix]\;
+                            } \Else{
+                                s\_vertex: \KwSty{Vertex} $\gets$ new\_vertex(sequence=suffix)\;
+                            }
+                            \If{k\_mer $\in$ edge\_dict} {
+                                edge: \KwSty{Edge} $\gets$ edge\_dict[k\_mer]\;
+                                determine\_edge\_multiplicities(read=read, edge=edge, i=i)\;
+                            } \Else {
+                                edge: \KwSty{Edge} $\gets$ new\_edge(in\_vertex=p\_vertex, out\_vertex=s\_vertex, sequence=k\_mer)\;
+                            }
+                            read.edges.add(edge)\;
+                            edge.reads.add(read)\;
+                            \If{read $\notin$ edge.position\_in\_read} {
+                                edge.position\_in\_read[read] $\gets$ [i]\;
+                            } \Else{
+                                edge.position\_in\_read[read].add(i)\;
+                            }
+                            \If{edge $\notin$ read.edge\_to\_positions} {
+                                read.edge\_to\_positions[edge] $\gets$ [i]\;
+                            } \Else{
+                                read.edge\_to\_positions[edge].add(i)\;
+                            }
+                            read.position\_to\_edge[i] $\gets$ edge\;
+                        }
+                    }
+                    \caption{INIT\_DE\_BRUIJN\_GRAPH}
+                \end{algorithm}
+            \end{minipage}
+        }
+    \endgroup
+\end{frame}
 \end{document}
