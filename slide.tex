@@ -440,4 +440,77 @@
         }
     \end{algorithm}
 \end{frame}
+
+\begin{frame}{Thuật toán tìm đường đi Euler}
+    \begingroup
+        \scalebox{0.8}{
+            \begin{minipage}{1.2\linewidth}
+                \begin{algorithm}[H]
+                    \DontPrintSemicolon
+                    \KwIn{$path:$ \KwSty{List \lbrack Edge \rbrack}, $vertex:$ \KwSty{Vertex}, $end\_vertex:$ \KwSty{Vertex}}
+            
+                    $out\_edges:$ \KwSty{List \lbrack Edge \rbrack} $\gets vertex.out\_edges$\;
+                    \ForEach{$o\_edge \in out\_edges$}{
+                        \If{$o\_edge.visited < o\_edge.multiplicities$}{
+                            $o\_edge.multiplicities = o\_edge.multiplicities + 1$\;
+                            $path.add(o\_edge)$\;
+                            $all\_visited:$ \KwSty{bool} $\gets graph.check\_all\_visited()$\;
+                            $o\_vertex:$ \KwSty{Vertex} $\gets o\_vertex.out\_vertex$\;
+                            \If{$all\_visited \cap o\_vertex = end\_vertex$} {
+                                \Return {$path, all\_visited, o\_vertex = end\_vertex$}\;
+                            } \Else{
+                                \If{$o\_vertex \neq end\_vertex$} {
+                                    $path, all\_visited, end\_equal = DFS\_VISIT(path=path, vertex=o\_vertex, end\_vertex=end\_vertex)$\;
+                                    \If{$all\_visited \cap end\_equal$}{
+                                        \Return{$path, all\_visited, end\_equal$}\;
+                                    }
+                                } \Else{
+                                    $path.remove(o\_edge)$\;
+                                    $o\_edge.visited = o\_edge.visited - 1$\;
+                                }
+                            }
+                        }
+                    }
+                    \caption{DFS\_VISIT}
+                \end{algorithm}
+            \end{minipage}
+        }
+    \endgroup
+\end{frame}
+
+\begin{frame}{{Thuật toán tìm đường đi Euler}}
+    
+    \begingroup
+        \scalebox{0.8}{
+            \begin{minipage}{1.2\linewidth}
+                \begin{algorithm}[H]
+                    \DontPrintSemicolon
+                    \KwIn{vertex\_list: \KwSty{List \lbrack Vertex \rbrack}, k: \KwSty{int}}
+                    start\_vertex $\gets$ null\;
+                    end\_vertex $\gets$ null\;
+                    \ForEach{vertex $\in$ vertex\_list}{
+                        \If{vertex.compute\_degree() = 1}{
+                            start\_vertex $\gets$ vertex\;
+                        }
+                        \If{vertex.compute\_degree() = -1}{
+                            end\_vertex $\gets$ vertex\;
+                        }
+                    }
+                    path: \KwSty{List \lbrack Edge \rbrack} $\gets \emptyset$\;
+                    path, all\_visited, end\_equal $\gets$ DFS\_VISIT(path=path, vertex=start\_vertex, end\_vertex=end\_vertex)\;
+                    origin\_string: \KwSty{str} $\gets$ ""\;
+                    \For{i $\gets$ 0 \KwTo path.length}{
+                        \If{i = 0} {
+                            origin\_string $\gets$ path[i].sequence\;
+                        } \Else{
+                            origin\_string $\gets$ origin\_string + path[i].sequence[k-1:]
+                        }
+                    }
+                    \Return{origin\_string}\;
+                    \caption{FIND\_EULERIAN\_PATH}\;
+                \end{algorithm}
+            \end{minipage}
+        }
+    \endgroup
+\end{frame}
 \end{document}
