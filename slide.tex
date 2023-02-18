@@ -448,26 +448,26 @@
             \begin{minipage}{1.2\linewidth}
                 \begin{algorithm}[H]
                     \DontPrintSemicolon
-                    \KwIn{$path:$ \KwSty{List \lbrack Edge \rbrack}, $vertex:$ \KwSty{Vertex}, $end\_vertex:$ \KwSty{Vertex}}
+                    \KwIn{path: \KwSty{List [Edge]}, vertex: \KwSty{Vertex}, end\_vertex: \KwSty{Vertex}}
             
-                    $out\_edges:$ \KwSty{List \lbrack Edge \rbrack} $\gets vertex.out\_edges$\;
-                    \ForEach{$o\_edge \in out\_edges$}{
-                        \If{$o\_edge.visited < o\_edge.multiplicities$}{
-                            $o\_edge.multiplicities = o\_edge.multiplicities + 1$\;
-                            $path.add(o\_edge)$\;
-                            $all\_visited:$ \KwSty{bool} $\gets graph.check\_all\_visited()$\;
-                            $o\_vertex:$ \KwSty{Vertex} $\gets o\_vertex.out\_vertex$\;
-                            \If{$all\_visited \cap o\_vertex = end\_vertex$} {
-                                \Return {$path, all\_visited, o\_vertex = end\_vertex$}\;
+                    out\_edges: \KwSty{List [Edge]} $\gets$ vertex.out\_edges\;
+                    \ForEach{o\_edge $\in$ out\_edges}{
+                        \If{o\_edge.visited < o\_edge.multiplicities}{
+                            o\_edge.multiplicities $\gets$ o\_edge.multiplicities + 1\;
+                            path.add(o\_edge)\;
+                            all\_visited: \KwSty{bool} $\gets$ graph.check\_all\_visited()\;
+                            o\_vertex: \KwSty{Vertex} $\gets$ o\_vertex.out\_vertex\;
+                            \If{all\_visited $\cap$ o\_vertex = end\_vertex} {
+                                \Return {path, all\_visited, o\_vertex = end\_vertex}\;
                             } \Else{
-                                \If{$o\_vertex \neq end\_vertex$} {
-                                    $path, all\_visited, end\_equal = DFS\_VISIT(path=path, vertex=o\_vertex, end\_vertex=end\_vertex)$\;
-                                    \If{$all\_visited \cap end\_equal$}{
-                                        \Return{$path, all\_visited, end\_equal$}\;
+                                \If{o\_vertex $\neq$ end\_vertex} {
+                                    path, all\_visited, end\_equal $\gets$ DFS\_VISIT(path=path, vertex=o\_vertex, end\_vertex=end\_vertex)\;
+                                    \If{all\_visited $\cap$ end\_equal}{
+                                        \Return{path, all\_visited, end\_equal}\;
                                     }
                                 } \Else{
-                                    $path.remove(o\_edge)$\;
-                                    $o\_edge.visited = o\_edge.visited - 1$\;
+                                    path.remove(o\_edge)\;
+                                    o\_edge.visited $\gets$ o\_edge.visited - 1\;
                                 }
                             }
                         }
