@@ -144,6 +144,56 @@
     \tableofcontents[hidesubsections]
 \end{frame}
 
+\section{Các định nghĩa trong lý thuyết đồ thị}
+
+\begin{frame}{Đồ thị de Bruijn}
+    Đồ thị de Bruijn là một đồ thị có hướng với các đỉnh biểu diễn các chuỗi ký tự từ bảng chữ cái và các cạnh được biểu diễn bắt đầu bằng chuỗi biểu diễn đỉnh bắt đầu và kết thúc bằng chuỗi biểu diễn đỉnh kết thúc.
+
+    Việc xây dựng đồ thị này phụ thuộc vào một tập các mảnh hoặc các đoạn có độ dài $k$ từ dãy cụ thể hiện có.
+
+    Mỗi đỉnh được gán nhãn bởi một đoạn có chiều dài $k-1$ và cạnh có hướng tồn tại giữa hai đỉnh đại diện cho một trong đoạn có chiều dài $l$.
+
+    Cụ thể, ký hiệu đầu tiên trong đoạn xuất phát từ đỉnh gửi cạnh và tương tự, ký tự cuối cùng biểu diễn đỉnh nhận.
+
+\end{frame}
+
+\begin{frame}{Đồ thị de Bruijn}
+    \begin{figure}[h!]
+        \centering
+        \includegraphics[width=0.4\textwidth]{1.png}
+        \caption{Một đồ thị de Bruijn cho chuỗi "0110101" với các đoạn chiều dài là 3.}
+        \label{fig:1}
+    \end{figure}
+
+    Ví dụ, ta xây dựng một đồ thị de Bruijn cho chuỗi "0110101" sử dụng các đoạn có độ dài $k=3$.
+
+    Bốn bộ ba có mặt trong chuỗi là 011, 110, 101 (xuất hiện hai lần) và 010.
+    
+    Hình \ref{fig:1} cho thấy đồ thị de Bruijn trùng với chuỗi này.
+\end{frame}
+
+\section{Định lý BEST}
+
+\begin{frame}{Định lý BEST}
+    \begin{dl}[Định lý BEST]
+        Cho một đồ thị có hướng liên thông $G$ và tập các đỉnh $V(G)=\lbrace v_1, v_2, \dots, v_n \rbrace$ tất cả đều có bậc vào bằng bậc ra, số chu trình Euler là $\lvert s(G) \rvert$ được tính theo công thức sau, với $\lvert t_i (G) \rvert$ là số cây khung hướng đến gốc là một đỉnh $v_i$ bất kỳ trong $G$:
+
+        \begin{equation*}
+            \lvert s(G) \rvert = \lvert t_i (G) \rvert \prod_{j=1}^n \big( d^+ (v_j) - 1 \big)!
+        \end{equation*}
+    \end{dl}
+\end{frame}
+
+\begin{frame}{Định lý cây ma trận}
+    \begin{dl}[Định lý cây ma trận]
+        Cho một đồ thị có hướng $G$ với tập các đỉnh $V(G)=\lbrace v_1, v_2, \dots, v_n \rbrace$ và một tập các cây khung $t_i (G)$ hướng đến đỉnh $v_i$ và $\lvert t_i(G) \rvert$ bằng với phần phụ đại số của ma trận $L(G)$ trên hàng và cột thứ $i$:
+
+        \begin{equation*}
+            \lvert t_i(G) \rvert = \det_{i, i} L(G)
+        \end{equation*}
+    \end{dl}
+\end{frame}
+
 \section{Thực nghiệm}
 
 \begin{frame}{Thuật toán xác định các đoạn chồng lấn}
@@ -836,6 +886,7 @@
                     \ForEach{edge $\in$ to\_remove\_edge}{
                         graph.edge\_list.remove(edge)\;
                     }
+                    \caption{CLEAN}
                 \end{algorithm}
             \end{minipage}
         }
