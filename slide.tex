@@ -172,6 +172,78 @@
     Hình \ref{fig:1} cho thấy đồ thị de Bruijn trùng với chuỗi này.
 \end{frame}
 
+\section{Giải trình tự và lắp ráp các đoạn DNA}
+
+\begin{frame}{Giải trình tự và lắp ráp các đoạn DNA}
+    Tất cả các đoạn DNA bao gồm bốn loại ba-zơ tạo nên: Adenine (A), Thymine (T), Guanine (G) và Cystosine (C).
+
+    Cấu hình của toàn bộ bộ gen dựa trên một loạt các chuỗi được đọc từ bộ gen đó.
+
+    Một chuỗi DNA đầy đủ bao gồm hàng triệu nucleotide nên không có cách nào để nắm được toàn bộ cấu trúc một cách rõ ràng.
+\end{frame}
+
+\begin{frame}{Những khó khăn trong quá trình lắp ráp}
+    Tỷ lệ sai này khoảng 1 \% đến 3 \% của DNA do máy giải trình tự tạo ra
+
+    Chuỗi DNA có cấu trúc xoắn kép.
+
+    Bộ gen của sinh vật nói chung có một lượng lớn các chuỗi lặp đi lặp lại nhiều lần.
+
+    Ví dụ, ta xét một bộ gen cụ thể có chuỗi lặp lại có độ dài 2000 nucleotide. Ngày nay không có một máy giải trình tự nào có thể đọc được một đoạn DNA co độ dài như vậy, vì vậy không có cách nào để đọc toàn bộ đoạn lặp lại.
+\end{frame}
+
+\section{So sánh chuỗi DNA với đồ thị de Bruijn}
+
+\begin{frame}{So sánh chuỗi DNA với đồ thị de Bruijn}
+    \cite{idury1995new} đã đề xuất cách tiếp cận tương tự trong lĩnh vực lắp ráp các đoạn DNA sử dụng phương pháp tiếp cận lý thuyết đồ thị.
+
+    Các tác giả đã định nghĩa các quy tắc để xây dựng một đồ thị có hướng dựa trên các đoạn DNA.
+
+    Các quy tắc này là để xây dựng một đồ thị de Bruijn dựa trên các đoạn DNA có độ dài $k$.
+
+    Đồ thị có các đỉnh được gán nhãn bằng một đoạn có độ dài là $k-1$, các cạnh được gán nhãn bằng đoạn có độ dài $k$, kết nối hai đỉnh kề trong chuỗi.
+\end{frame}
+
+\begin{frame}
+    \begin{figure}[h!]
+        \centering
+        \includegraphics[width=0.6\textwidth]{2.png}
+        \caption{Một đồ thị de Bruijn cho chuỗi ATGTGCCGCA.}
+        \label{fig:2}
+    \end{figure}
+
+    Hình \ref{fig:2} minh họa một đồ thị de Bruijn cho một chuỗi đơn giản ATGTGCCGCA.
+
+    Các đỉnh được đánh dấu bằng các đoạn có độ dài là 2 và các cạnh được đánh dấu bằng các đoạn có độ dài là 3, biểu diễn cho các bộ ba thu được từ chuỗi ban đầu.
+\end{frame}
+
+\begin{frame}
+    \begin{figure}[h!]
+        \centering
+        \includegraphics[width=0.6\textwidth]{3.png}
+        \caption{Một đồ thị được xây dựng từ tập các đoạn đọc được $S$}
+        \label{fig:3}
+    \end{figure}
+
+    Với tập hợp các đoạn $S = \lbrace ATG, TGG, TGC, GTG, GGC, GCA, GCG, CGT \rbrace$,
+    đồ thị sẽ có các đỉnh được gán nhãn bởi các đoạn có độ dài là 2 và các cạnh được gán nhãn bởi các đoạn có độ dài là 3.
+
+\end{frame}
+
+\begin{frame}
+    Có hai đường đi Euler khác nhau cho toàn bộ đồ thị, tạo ra các chuỗi ATGGCGTGCA và ATGCGTGGCA.
+
+    Phương pháp tiếp cận lắp ráp các đoạn DNA này được một số nà nghiên cứu gọi là phương pháp đường đi Euler, tạo ra một bài toán về xác suất.
+
+    Ta thấy với tập hợp mảnh đã cho ta có thể xây dựng hai chuỗi khác nhau dựa trên việc có hai đường đi Euler khác nhau.
+
+    Tổng quát hơn, khi ta được cung cấp dữ liệu đầy đủ và không có lỗi, ta có thể thấy rằng xác suất tái tạo lại chuỗi DNA ban đầu với một tập hợp các đoạn là:
+
+    \begin{equation}
+        \dfrac{1}{\text{tổng số chu trình/đường đi Euler trong đồ thị de Bruijn}}
+    \end{equation}
+\end{frame}
+
 \section{Định lý BEST}
 
 \begin{frame}{Định lý BEST}
@@ -184,6 +256,79 @@
     \end{dl}
 \end{frame}
 
+\begin{frame}{Ma trận kề}
+    Một ma trận là ma trận kề, liệt kê số các cạnh giữa các đỉnh trong đồ thị.
+
+    Ma trận này có kích thước $n \times n$ với $n$ là số đỉnh của đồ thị $G$.
+
+    Nếu $a_{ij}$ là số cạnh có hướng rời đỉnh $v_i$ và đi vào đỉnh $v_j$ trong đồ thị $G$, khi đó $a_{ij}$ là phần tử $i, j$ của ma trận.
+
+\end{frame}
+
+\begin{frame}{Ma trận kề}
+    \begin{figure}[h!]
+        \centering
+        \includegraphics[width=0.6\textwidth]{4.png}
+        \caption{Sử dụng chu trình Euler $v_1 v_2 v_4 v_2 v_3 v_4 v_1$ trong đồ thị $G$, ánh xạ tạo ra cây khung hướng đến đỉnh $v_1$ biểu thị trong các đường đậm trong đồ thị bên phải.}
+        \label{fig:4}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Ma trận kề}
+    Ma trận kề của đồ thị được ký hiệu là $A(G)$ của đồ thị $G$ từ hình \ref{fig:4}.
+
+    \begin{equation*}
+        A(G) = \begin{pmatrix}
+            0 & 1 & 0 & 0 \\ 
+            0 & 0 & 1 & 1 \\ 
+            0 & 0 & 0 & 1 \\ 
+            1 & 1 & 0 & 0
+        \end{pmatrix}
+    \end{equation*}
+\end{frame}
+
+\begin{frame}{Ma trận đường chéo}
+
+    Ma trận thứ hai có thể được xây dựng từ một đồ thị là một ma trận đường chéo.
+
+    Ma trận này điền các bậc vào của từng đỉnh trong đồ thị vào đường chéo.
+
+    Tất cả các phần tử khác là 0.
+
+    Sử dụng cùng đồ thị $G$ ở trên, ma trận đường chéo $D(G)$ là:
+
+    \begin{equation*}
+        D(G) = \begin{pmatrix}
+            1 & 0 & 0 & 0 \\
+            0 & 2 & 0 & 0 \\
+            0 & 0 & 1 & 0 \\
+            0 & 0 & 0 & 2
+        \end{pmatrix}
+    \end{equation*} 
+    
+\end{frame}
+
+\begin{frame}{Ma trận Laplace}
+
+    Ma trận này là kết quả của $D(G)$ trừ $A(G)$.
+
+    \begin{equation*}
+        L(G) = \begin{pmatrix}
+            1 & -1 & 0 & 0 \\
+            0 & 2 & -1 & -1 \\
+            0 & 0 & 1 & -1 \\
+            -1 & -1 & 0 & 2 \\
+        \end{pmatrix}
+    \end{equation*}
+
+    Tính định thức của ma trận này ta thu được giá trị $k=2$.
+
+    Hơn nữa, nếu ta tính cả ba phần phụ đại số còn lại của $L(G)$, ta có thể thấy tất cả đều bằng 2.
+
+    Lý dotừ việc là tổng tất cả các hàng và cột đều bằng 0 và sẽ đúng cho tất cả các ma trận có tổng các hàng và cột đều bằng 0.
+    Chứng minh cho điều này được nêu trong \cite{fleischner1990eulerian}.
+\end{frame}
+
 \begin{frame}{Định lý cây ma trận}
     \begin{dl}[Định lý cây ma trận]
         Cho một đồ thị có hướng $G$ với tập các đỉnh $V(G)=\lbrace v_1, v_2, \dots, v_n \rbrace$ và một tập các cây khung $t_i (G)$ hướng đến đỉnh $v_i$ và $\lvert t_i(G) \rvert$ bằng với phần phụ đại số của ma trận $L(G)$ trên hàng và cột thứ $i$:
@@ -192,6 +337,17 @@
             \lvert t_i(G) \rvert = \det_{i, i} L(G)
         \end{equation*}
     \end{dl}
+\end{frame}
+
+\section{Bài toán siêu đường đi Euler}
+
+\begin{frame}{Định nghĩa bài toán siêu đường đi Euler}
+    Bài toán (siêu) đường đi Euler (được gọi ở đây là ESP) nhằm thực hiện những điều sau:
+    Cho một đồ thị Euler $G$ với một tập các đường đi $P$ trong đồ thị, tìm một chu trình Euler trong đồ thị $G$ chứa tất cả các thành phần của $P$ là đường đi con.
+\end{frame}
+
+\begin{frame}{Ví dụ}
+    
 \end{frame}
 
 \section{Thực nghiệm}
