@@ -343,10 +343,26 @@
 
 \begin{frame}{Định nghĩa bài toán siêu đường đi Euler}
     Bài toán (siêu) đường đi Euler (được gọi ở đây là ESP) nhằm thực hiện những điều sau:
-    Cho một đồ thị Euler $G$ với một tập các đường đi $P$ trong đồ thị, tìm một chu trình Euler trong đồ thị $G$ chứa tất cả các thành phần của $P$ là đường đi con.
+    Cho một đồ thị Euler $G$ với một tập các đường đi $P$ (trong các tài liệu khác còn gọi là tập các Read) trong đồ thị, tìm một đường đi Euler trong đồ thị $G$ chứa tất cả các thành phần của $P$ là đường đi con.
 \end{frame}
 
 \begin{frame}{Ví dụ}
+
+    Giả sử ta có các đoạn sau: (1) $ATGG$, (2) $TGGCG$, (3) $GGCGTG$ và (4) $CGTGCA$.
+
+    Hình \ref{fig:3} biểu diễn đồ thị de Bruijn xây dựng từ các đoạn trên.
+
+    Có hai đường đi Euler khác nhau cho toàn bộ đồ thị, tạo ra các chuỗi ATGGCGTGCA và ATGCGTGGCA.
+
+    Nhưng chỉ có chuỗi ATGGCGTGCA chứa tất cả các đoạn đọc được.
+
+    
+\end{frame}
+
+\begin{frame}{Cách tiếp cận}
+    Ta duy trì sự tương đương giữa đồ thị $G$ và hệ thống của các đường đi $P$ bằng một loạt các phép biến đổi $(G, P) \rightarrow (G_1, P_1) \rightarrow \dots \rightarrow (G_k, P_k)$.
+
+    Tập kết quả $(G_k, P_k)$ là một biểu diễn gọn hơn nhiều của $(G, P)$.
     
 \end{frame}
 
