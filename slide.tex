@@ -146,12 +146,23 @@
 
 \section{Các định nghĩa trong lý thuyết đồ thị}
 
+\begin{frame}{Phương pháp tiếp cận lý thuyết đồ thị giải trình tự DNA}
+
+    Một đường đi Euler là một đường đi đi qua tất cả các cạnh trong đồ thị và mỗi cạnh chỉ đi qua một và chỉ một lần (cạnh đơn).
+
+    Giải trình tự bằng cách xây dựng đồ thị có hướng, tìm đường đi Euler trong đồ thị.
+
+    Do một đồ thị vô hướng có thể có nhiều đường đi Euler, ta quan tâm đến các phép biến đổi đồ thị sao cho đường đi Euler thu được biểu diễn chuỗi DNA thực sự ban đầu.
+
+    
+\end{frame}
+
 \begin{frame}{Đồ thị de Bruijn}
     Đồ thị de Bruijn là một đồ thị có hướng với các đỉnh biểu diễn các chuỗi ký tự từ bảng chữ cái và các cạnh được biểu diễn bắt đầu bằng chuỗi biểu diễn đỉnh bắt đầu và kết thúc bằng chuỗi biểu diễn đỉnh kết thúc.
 
     Việc xây dựng đồ thị này phụ thuộc vào một tập các mảnh hoặc các đoạn có độ dài $k$ từ dãy cụ thể hiện có.
 
-    Mỗi đỉnh được gán nhãn bởi một đoạn có chiều dài $k-1$ và cạnh có hướng tồn tại giữa hai đỉnh đại diện cho một trong đoạn có chiều dài $l$.
+    Mỗi đỉnh được gán nhãn bởi một đoạn có chiều dài $k-1$ và cạnh có hướng tồn tại giữa hai đỉnh đại diện cho một trong đoạn có chiều dài $k$.
 
     Cụ thể, ký hiệu đầu tiên trong đoạn xuất phát từ đỉnh gửi cạnh và tương tự, ký tự cuối cùng biểu diễn đỉnh nhận.
 
@@ -190,11 +201,13 @@
     Bộ gen của sinh vật nói chung có một lượng lớn các chuỗi lặp đi lặp lại nhiều lần.
 
     Ví dụ, ta xét một bộ gen cụ thể có chuỗi lặp lại có độ dài 2000 nucleotide. Ngày nay không có một máy giải trình tự nào có thể đọc được một đoạn DNA co độ dài như vậy, vì vậy không có cách nào để đọc toàn bộ đoạn lặp lại.
+
+    Một biện pháp khắc phục là sử dụng "overlap-layout-concensus".
 \end{frame}
 
-\section{So sánh chuỗi DNA với đồ thị de Bruijn}
+\section{Xây dựng chuỗi DNA với đồ thị de Bruijn}
 
-\begin{frame}{So sánh chuỗi DNA với đồ thị de Bruijn}
+\begin{frame}{Xây dựng chuỗi DNA với đồ thị de Bruijn}
     \cite{idury1995new} đã đề xuất cách tiếp cận tương tự trong lĩnh vực lắp ráp các đoạn DNA sử dụng phương pháp tiếp cận lý thuyết đồ thị.
 
     Các tác giả đã định nghĩa các quy tắc để xây dựng một đồ thị có hướng dựa trên các đoạn DNA.
@@ -204,6 +217,14 @@
     Đồ thị có các đỉnh được gán nhãn bằng một đoạn có độ dài là $k-1$, các cạnh được gán nhãn bằng đoạn có độ dài $k$, kết nối hai đỉnh kề trong chuỗi.
 \end{frame}
 
+\begin{frame}
+    \begin{figure}[h!]
+        \centering
+        \includegraphics[width=0.4\textwidth]{de_Bruijn_graph_example.png}
+        \caption{Các k-mers được tạo từ một chuỗi các nucleotide}
+    \end{figure}
+\end{frame}
+    
 \begin{frame}
     \begin{figure}[h!]
         \centering
@@ -342,6 +363,11 @@
 \section{Bài toán siêu đường đi Euler}
 
 \begin{frame}{Định nghĩa bài toán siêu đường đi Euler}
+
+    Cho một tập các Read $\mathcal{P} = \lbrace P_1, P_2, \dots, P_n \rbrace$ (hay còn gọi là các đường đi).
+    Từ các Read này, ta xây dựng một đồ thị de Bruijn $G$.
+
+
     Bài toán (siêu) đường đi Euler (được gọi ở đây là ESP) nhằm thực hiện những điều sau:
     Cho một đồ thị Euler $G$ với một tập các đường đi $P$ (trong các tài liệu khác còn gọi là tập các Read) trong đồ thị, tìm một đường đi Euler trong đồ thị $G$ chứa tất cả các thành phần của $P$ là đường đi con.
 \end{frame}
@@ -364,6 +390,81 @@
 
     Tập kết quả $(G_k, P_k)$ là một biểu diễn gọn hơn nhiều của $(G, P)$.
     
+\end{frame}
+
+\begin{frame}{Phép tách rời $x, y$}
+
+    Có thể được thực hiện trong trường hợp cạnh không có bội số trong đồ thị $G$ đã cho.
+    
+    Nếu ta có hai cạnh kề nhau $x$ và $y$ trong đồ thị $G$ và ba tập Read đủ từ $\mathcal{P}$, một trong số đó có cả hai cạnh liên tiếp, một tập kết thúc với $x$ và một bắt đầu với $y$, phép tách này được thực hiện. Cụ thể, đỉnh nối với hai cạnh bị kéo ra xa, tạo ra một cạnh mới $z$.
+
+    \begin{figure}[h!]
+        \centering
+        \includegraphics[width=0.6\textwidth]{figures/xy_detachment.png}
+        \caption{Minh họa phép tách rời $x, y$ \cite{pevzner2001new}}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Phép tách rời $x, y$}
+    \begin{figure}[h!]
+        \centering
+        \includegraphics[width=0.9\textwidth]{6.png}
+        \caption{Một phép tách rời $x, y$ kết nối các cạnh $ATG$ và $TGT$.}
+        \label{fig:6}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Phép tách rời $x, y_1$}
+    Giống như phép tách rời trước đó, phép tách rời $x, y_1$ tương tự phụ thuộc vào tập các Read.
+
+    Tập đầu tiên là tất cả các đường dẫn chứa một bản sao của cạnh có bội số $x$ theo sau là $y_1$.
+
+    Tập thứ hai và thứ ba là những tập kết thúc với cạnh có bội số $x$ và những tập bắt đầu bằng cạnh $y_1$.
+
+    \begin{figure}[h!]
+        \centering
+        \includegraphics[width=0.6\textwidth]{figures/xy1_detachment.png}
+        \caption{Minh họa phép tách rời $x, y_1$ \cite{pevzner2001new}}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Phép tách rời $x, y_1$}
+    Nếu không có đường đi nào kết thúc trên $x$ thì ta có thể xóa một bản sao của $x$ một cách an toàn và tạo một cạnh mới $xy_1$.
+
+    \begin{figure}[h!]
+        \centering
+        \includegraphics[width=0.9\textwidth]{7.png}
+        \caption{Một phép tách rời $x, y_1$ thành công tại cạnh đa $ATG$.}
+        \label{fig:7}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Ví dụ}
+    Giả sử ta có các đoạn sau: (1) $ATGG$, (2) $TGGCG$, (3) $GGCGTG$ và (4) $CGTGCA$.
+
+    Với những đoạn này, có hai phép tách rời cạnh đơn quan trọng ta có thể thực hiện và vẫn duy gì sự tương đương với đồ thị ban đầu.
+
+    Phép biến đổi này được thể hiện trong hình \ref{fig:8}.
+
+    
+\end{frame}
+
+\begin{frame}{Ví dụ}
+    \begin{figure}[h!]
+        \centering
+        \includegraphics[width=0.5\textwidth]{8.png}
+        \caption{Đồ thị được tạo ra sau hai phép tách rời trên đồ thị trong hình \ref{fig:3}.}
+        \label{fig:8}
+    \end{figure}
+
+    
+\end{frame}
+
+\begin{frame}{Ví dụ}
+    Phép tách đầu tiên diễn ra tại đỉnh $TG$. Đoạn (1) đi từ $AT$ đến $GG$ qua đỉnh $TG$, trong khi các đoạn (3) và (4) đi qua $TG$ từ $GT$ rồi chuyển sang $GC$.
+
+    Phép tách quan trọng thứ hai diễn ra tại đỉnh $GC$. Tại đây, cả đoạn (2) và (3) đều đi qua $GC$ từ $GG$ rồi đến $CG$. 
+    Hơn nữa, đoạn (4) đi qua $GC$ sau khi từ $TG$ và kết thúc tại $CA$.
 \end{frame}
 
 \section{Thực nghiệm}
@@ -1063,6 +1164,11 @@
             \end{minipage}
         }
     \endgroup
+\end{frame}
+
+\section{Tài liệu tham khảo}
+\begin{frame}[allowframebreaks]{Tài liệu tham khảo}
+    \printbibliography
 \end{frame}
 
 \end{document}
