@@ -469,6 +469,28 @@
 
 \section{Thực nghiệm}
 
+\begin{frame}{Minh họa quá trình giải trình tự}
+    \begin{figure}[h!]
+        \centering
+        \includegraphics[width=0.75\textwidth]{Illustration-of-de-Bruijn-graph-based-assembly.png}
+        \caption{Minh họa quá trình giải trình tự}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Thủ tục chương trình chính}
+    \begin{algorithm}[H]
+        \DontPrintSemicolon
+        \KwIn{seqs: \KwSty{List[str]}, k: \KwSty{int}}
+        INIT\_DE\_BRUIJN\_GRAPH(seqs=seqs, k=k)\;
+        IS\_EULERIAN()\;
+        MERGE\_EQUAL\_MULTIPLICITIES\_EDGES()\;
+        MERGE\_UNEQUAL\_MULTIPLICITIES\_EDGES()\;
+        IS\_EULERIAN()\;
+        FIND\_EULERIAN\_PATH()\;
+    \end{algorithm}
+    
+\end{frame}
+
 \begin{frame}{Thuật toán xác định các đoạn chồng lấn}
     \begin{algorithm}[H]
         \DontPrintSemicolon
