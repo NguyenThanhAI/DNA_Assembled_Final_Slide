@@ -589,7 +589,7 @@
 
 \begin{frame}{Thuật toán cập nhật vị trí các cạnh trong một Read khi x và y là liền kề}
     \begingroup
-        \scalebox{0.4}{
+        \scalebox{0.35}{
             \begin{minipage}{2.0\linewidth}
                 \begin{algorithm}[H]
                     \DontPrintSemicolon
@@ -739,35 +739,41 @@
 \end{frame}
 
 \begin{frame}{Thuật toán kiểm tra đồ thị Euler}
-    \begin{algorithm}[H]
-        \DontPrintSemicolon
-        \KwIn{vertex\_list: \KwSty{List [Vertex]}}
-        diff\_list: \KwSty{List [int]} $\gets \emptyset$\;
-        \ForEach{vertex $\in$ vertex\_list}{
-            diff\_mul $\gets$ vertex.compute\_degree()\;
-            \If{diff\_mul = 0} {
-                continue\;
-            } \Else {
-                \If{$\lvert$ diff\_mul $\rvert \geq$ 2} {
-                    \Return{false}\;
-                }
-                \Else {
-                    diff\_list.add(diff\_mul)\;
-                }
-            }
+    \begingroup
+        \scalebox{0.8}{
+            \begin{minipage}{1.5\linewidth}
+                \begin{algorithm}[H]
+                    \DontPrintSemicolon
+                    \KwIn{vertex\_list: \KwSty{List [Vertex]}}
+                    diff\_list: \KwSty{List [int]} $\gets \emptyset$\;
+                    \ForEach{vertex $\in$ vertex\_list}{
+                        diff\_mul $\gets$ vertex.compute\_degree()\;
+                        \If{diff\_mul = 0} {
+                            continue\;
+                        } \Else {
+                            \If{$\lvert$ diff\_mul $\rvert \geq$ 2} {
+                                \Return{false}\;
+                            }
+                            \Else {
+                                diff\_list.add(diff\_mul)\;
+                            }
+                        }
+                    }
+                    \If{diff\_list.length = 2 $\cap$ diff\_list [0] $\times$ diff\_list [1] = -1} {
+                        \Return{true}\;
+                    } \Else{
+                        \Return{false}\;
+                    }
+                    \caption{IS\_EULERIAN}
+                \end{algorithm}
+            \end{minipage}
         }
-        \If{diff\_list.length = 2 $\cap$ diff\_list [0] $\times$ diff\_list [1] = -1} {
-            \Return{true}\;
-        } \Else{
-            \Return{false}\;
-        }
-        \caption{IS\_EULERIAN}
-    \end{algorithm}
+    \endgroup
 \end{frame}
 
 \begin{frame}{Thuật toán tìm đường đi Euler}
     \begingroup
-        \scalebox{0.8}{
+        \scalebox{0.65}{
             \begin{minipage}{1.2\linewidth}
                 \begin{algorithm}[H]
                     \DontPrintSemicolon
@@ -776,7 +782,7 @@
                     out\_edges: \KwSty{List [Edge]} $\gets$ vertex.out\_edges\;
                     \ForEach{o\_edge $\in$ out\_edges}{
                         \If{o\_edge.visited < o\_edge.multiplicities}{
-                            o\_edge.multiplicities $\gets$ o\_edge.multiplicities + 1\;
+                            o\_edge.visited $\gets$ o\_edge.visited + 1\;
                             path.add(o\_edge)\;
                             all\_visited: \KwSty{bool} $\gets$ graph.check\_all\_visited()\;
                             o\_vertex: \KwSty{Vertex} $\gets$ o\_vertex.out\_vertex\;
@@ -805,7 +811,7 @@
 \begin{frame}{{Thuật toán tìm đường đi Euler}}
     
     \begingroup
-        \scalebox{0.8}{
+        \scalebox{0.65}{
             \begin{minipage}{1.2\linewidth}
                 \begin{algorithm}[H]
                     \DontPrintSemicolon
@@ -840,7 +846,7 @@
 
 \begin{frame}{Thuật toán khởi tạo đồ thị de Bruijn}
     \begingroup
-        \scalebox{0.4}{
+        \scalebox{0.3}{
             \begin{minipage}{1.8\linewidth}
                 \begin{algorithm}[H]
                     \DontPrintSemicolon
@@ -883,8 +889,12 @@
                             } \Else {
                                 edge: \KwSty{Edge} $\gets$ new\_edge(in\_vertex=p\_vertex, out\_vertex=s\_vertex, sequence=k\_mer)\;
                             }
-                            read.edges.add(edge)\;
-                            edge.reads.add(read)\;
+                            \If{edge $\notin$ read.edges} {
+                                read.edges.add(edge)\;
+                            }
+                            \If{read $\notin$ edge.reads}{
+                                edge.reads.add(read)\;
+                            }                            
                             \If{read $\notin$ edge.position\_in\_read} {
                                 edge.position\_in\_read[read] $\gets$ [i]\;
                             } \Else{
@@ -956,7 +966,7 @@
 
 \begin{frame}{Thuật toán merge các cạnh khác bội số}
     \begingroup
-        \scalebox{0.35}{
+        \scalebox{0.3}{
             \begin{minipage}{2\linewidth}
                 \begin{algorithm}[H]
                     \DontPrintSemicolon
@@ -1030,7 +1040,7 @@
 
 \begin{frame}{Thuật toán kiểm tra hai cạnh cùng bội có thể merge được không}
     \begingroup
-        \scalebox{0.6}{
+        \scalebox{0.5}{
             \begin{minipage}{1.8\linewidth}
                 \begin{algorithm}[H]
                     \DontPrintSemicolon
@@ -1080,7 +1090,7 @@
 
 \begin{frame}{Thuật toán kiểm tra hai cạnh khác bội có thể merge được không}
     \begingroup
-        \scalebox{0.6}{
+        \scalebox{0.5}{
             \begin{minipage}{1.8\linewidth}
                 \begin{algorithm}[H]
                     \DontPrintSemicolon
@@ -1130,8 +1140,8 @@
 
 \begin{frame}{Thuật toán xóa các đỉnh và cạnh sau khi merge các cạnh}
     \begingroup
-        \scalebox{0.8}{
-            \begin{minipage}{1.5\linewidth}
+        \scalebox{0.6}{
+            \begin{minipage}{1.8\linewidth}
                 \begin{algorithm}[H]
                     \DontPrintSemicolon
                     \KwIn{graph: \KwSty{Graph}}
