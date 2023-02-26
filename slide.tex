@@ -487,8 +487,250 @@
         MERGE\_UNEQUAL\_MULTIPLICITIES\_EDGES()\;
         IS\_EULERIAN()\;
         FIND\_EULERIAN\_PATH()\;
+        \caption{MAIN}
     \end{algorithm}
     
+\end{frame}
+
+\begin{frame}{Thuật toán khởi tạo đồ thị de Bruijn}
+    \begingroup
+        \scalebox{0.3}{
+            \begin{minipage}{1.8\linewidth}
+                \begin{algorithm}[H]
+                    \DontPrintSemicolon
+                    \KwIn{seqs: \KwSty{List[str]}, k: \KwSty{int}}
+
+                    vertex\_list: \KwSty{List[Vertex]} $\gets \emptyset$\;
+                    vertex\_dict: \KwSty{Dict[str, Vertex]} $\gets \lbrace \rbrace$\;
+                    edge\_list: \KwSty{List[Edge]} $\gets \emptyset$\;
+                    edge\_dict: \KwSty{Dict[str, Edge]} $\gets \lbrace\rbrace$\;
+                    read\_list: \KwSty{List[Read]} $\gets \emptyset$\;
+
+                    \For{s $\gets$ 0 \KwTo seqs.length}{
+                        seq: \KwSty{str} $\gets$ seqs[s]\;
+                        read: \KwSty{Read} $\gets$ Read(sequence=seq, read\_id=s)\;
+                        read\_list.add(read)\; 
+                    }
+                    align\_read(min\_length=k)\;
+                    \ForEach{read $\in$ read\_list}{
+                        seq: \KwSty{str} $\gets$ read.sequence\;
+
+                        \For{i $\gets$ 0 \KwTo seq.length - k + 1}{
+                            k\_mer: \KwSty{str} $\gets$ seq[i:i+k]\;
+                            prefix: \KwSty{str} $\gets$ k\_mer[:k-1]\;
+                            suffix: \KwSty{str} $\gets$ k\_mer[1:]\;
+
+                            \If{prefix $\in$ vertex\_dict} {
+                                p\_vertex: \KwSty{Vertex} $\gets$ vertex\_dict[prefix]\;
+                            } \Else{
+                                p\_vertex: \KwSty{Vertex} $\gets$ new\_vertex(sequence=prefix)\;
+                            }
+
+                            \If{suffix $\in$ vertex\_dict} {
+                                s\_vertex: \KwSty{Vertex} $\gets$ vertex\_dict[suffix]\;
+                            } \Else{
+                                s\_vertex: \KwSty{Vertex} $\gets$ new\_vertex(sequence=suffix)\;
+                            }
+                            \If{k\_mer $\in$ edge\_dict} {
+                                edge: \KwSty{Edge} $\gets$ edge\_dict[k\_mer]\;
+                                determine\_edge\_multiplicities(read=read, edge=edge, i=i)\;
+                            } \Else {
+                                edge: \KwSty{Edge} $\gets$ new\_edge(in\_vertex=p\_vertex, out\_vertex=s\_vertex, sequence=k\_mer)\;
+                            }
+                            \If{edge $\notin$ read.edges} {
+                                read.edges.add(edge)\;
+                            }
+                            \If{read $\notin$ edge.reads}{
+                                edge.reads.add(read)\;
+                            }                            
+                            \If{read $\notin$ edge.position\_in\_read} {
+                                edge.position\_in\_read[read] $\gets$ [i]\;
+                            } \Else{
+                                edge.position\_in\_read[read].add(i)\;
+                            }
+                            \If{edge $\notin$ read.edge\_to\_positions} {
+                                read.edge\_to\_positions[edge] $\gets$ [i]\;
+                            } \Else{
+                                read.edge\_to\_positions[edge].add(i)\;
+                            }
+                            read.position\_to\_edge[i] $\gets$ edge\;
+                        }
+                    }
+                    \caption{INIT\_DE\_BRUIJN\_GRAPH}
+                \end{algorithm}
+            \end{minipage}
+        }
+    \endgroup
+\end{frame}
+
+\begin{frame}{Thuật toán kiểm tra hai cạnh cùng bội có thể merge được không}
+    \begingroup
+        \scalebox{0.5}{
+            \begin{minipage}{1.8\linewidth}
+                \begin{algorithm}[H]
+                    \DontPrintSemicolon
+                    \KwIn{graph: \KwSty{Graph}, vertex\_list: \KwSty{List[Vertex]}}
+                    \While{vertex\_list.length > 0}{
+                        vertex: \KwSty{int} $\gets$ vertex\_list.pop(0)\;
+                        num\_in\_edge: \KwSty{int} $\gets$ vertex.in\_edges.length\;
+                        num\_out\_edge: \KwSty{int} $\gets$ vertex.out\_edges.length\;
+
+                        \If{abs(vertex.compute\_degree()) = 1} {
+                            continue\;
+                        }
+
+                        \If{num\_in\_edge = 0 $\cap$ num\_out\_edge = 0} {
+                            continue\;
+                        }
+
+                        in\_edges: \KwSty{List[Edge]} = vertex.in\_edges.copy()\;
+                        out\_edges: \KwSty{List[Edge]} = vertex.out\_edges.copy()\;
+
+                        \If{num\_in\_edge = num\_out\_edge} {
+                            \ForEach{x $\in$ in\_edges}{
+                                x\_reads $\gets$ x.reads.copy()\;
+                                \ForEach{y $\in$ out\_edges} {
+                                    \If{x.multiplicities = y.multiplicities} {
+                                        \For{read $\in$ x\_reads} {
+                                            \If{read $\in$ y.reads} {
+                                                \If{read.check\_consecutive\_edges(x=x, y=y)} {
+                                                    \If{graph.merge(x=x, y=y)} {
+                                                        graph.clean()\;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    graph.clean()
+                    \caption{MERGE\_EQUAL\_MULTIPLICITIES\_EDGES}
+                \end{algorithm}
+            \end{minipage}
+        }
+    \endgroup
+\end{frame}
+
+
+\begin{frame}{Thuật toán kiểm tra hai cạnh khác bội có thể merge được không}
+    \begingroup
+        \scalebox{0.5}{
+            \begin{minipage}{1.8\linewidth}
+                \begin{algorithm}[H]
+                    \DontPrintSemicolon
+                    \KwIn{graph: \KwSty{Graph}, vertex\_list: \KwSty{List[Vertex]}}
+                    \While{vertex\_list.length > 0}{
+                        vertex: \KwSty{int} $\gets$ vertex\_list.pop(0)\;
+                        num\_in\_edge: \KwSty{int} $\gets$ vertex.in\_edges.length\;
+                        num\_out\_edge: \KwSty{int} $\gets$ vertex.out\_edges.length\;
+
+                        \If{abs(vertex.compute\_degree()) = 1} {
+                            continue\;
+                        }
+
+                        \If{num\_in\_edge = 0 $\cap$ num\_out\_edge = 0} {
+                            continue\;
+                        }
+
+                        in\_edges: \KwSty{List[Edge]} = vertex.in\_edges.copy()\;
+                        out\_edges: \KwSty{List[Edge]} = vertex.out\_edges.copy()\;
+
+                        \If{num\_in\_edge = num\_out\_edge} {
+                            \ForEach{x $\in$ in\_edges}{
+                                x\_reads $\gets$ x.reads.copy()\;
+                                \ForEach{y $\in$ out\_edges} {
+                                    \If{x.multiplicities = y.multiplicities} {
+                                        \For{read $\in$ x\_reads} {
+                                            \If{read $\in$ y.reads} {
+                                                \If{read.check\_consecutive\_edges(x=x, y=y)} {
+                                                    \If{graph.merge\_mul(x=x, y=y)} {
+                                                        graph.clean()\;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    graph.clean()
+                    \caption{MERGE\_UNEQUAL\_MULTIPLICITIES\_EDGES}
+                \end{algorithm}
+            \end{minipage}
+        }
+    \endgroup
+\end{frame}
+
+\begin{frame}{Thuật toán kiểm tra đồ thị Euler}
+    \begingroup
+        \scalebox{0.8}{
+            \begin{minipage}{1.5\linewidth}
+                \begin{algorithm}[H]
+                    \DontPrintSemicolon
+                    \KwIn{vertex\_list: \KwSty{List [Vertex]}}
+                    diff\_list: \KwSty{List [int]} $\gets \emptyset$\;
+                    \ForEach{vertex $\in$ vertex\_list}{
+                        diff\_mul $\gets$ vertex.compute\_degree()\;
+                        \If{diff\_mul = 0} {
+                            continue\;
+                        } \Else {
+                            \If{$\lvert$ diff\_mul $\rvert \geq$ 2} {
+                                \Return{false}\;
+                            }
+                            \Else {
+                                diff\_list.add(diff\_mul)\;
+                            }
+                        }
+                    }
+                    \If{diff\_list.length = 2 $\cap$ diff\_list [0] $\times$ diff\_list [1] = -1} {
+                        \Return{true}\;
+                    } \Else{
+                        \Return{false}\;
+                    }
+                    \caption{IS\_EULERIAN}
+                \end{algorithm}
+            \end{minipage}
+        }
+    \endgroup
+\end{frame}
+
+\begin{frame}{{Thuật toán tìm đường đi Euler}}
+    
+    \begingroup
+        \scalebox{0.65}{
+            \begin{minipage}{1.2\linewidth}
+                \begin{algorithm}[H]
+                    \DontPrintSemicolon
+                    \KwIn{vertex\_list: \KwSty{List \lbrack Vertex \rbrack}, k: \KwSty{int}}
+                    start\_vertex $\gets$ null\;
+                    end\_vertex $\gets$ null\;
+                    \ForEach{vertex $\in$ vertex\_list}{
+                        \If{vertex.compute\_degree() = 1}{
+                            start\_vertex $\gets$ vertex\;
+                        }
+                        \If{vertex.compute\_degree() = -1}{
+                            end\_vertex $\gets$ vertex\;
+                        }
+                    }
+                    path: \KwSty{List \lbrack Edge \rbrack} $\gets \emptyset$\;
+                    path, all\_visited, end\_equal $\gets$ DFS\_VISIT(path=path, vertex=start\_vertex, end\_vertex=end\_vertex)\;
+                    origin\_string: \KwSty{str} $\gets$ ""\;
+                    \For{i $\gets$ 0 \KwTo path.length}{
+                        \If{i = 0} {
+                            origin\_string $\gets$ path[i].sequence\;
+                        } \Else{
+                            origin\_string $\gets$ origin\_string + path[i].sequence[k-1:]
+                        }
+                    }
+                    \Return{origin\_string}\;
+                    \caption{FIND\_EULERIAN\_PATH}\;
+                \end{algorithm}
+            \end{minipage}
+        }
+    \endgroup
 \end{frame}
 
 \begin{frame}{Thuật toán xác định các đoạn chồng lấn}
@@ -760,39 +1002,6 @@
     \endgroup
 \end{frame}
 
-\begin{frame}{Thuật toán kiểm tra đồ thị Euler}
-    \begingroup
-        \scalebox{0.8}{
-            \begin{minipage}{1.5\linewidth}
-                \begin{algorithm}[H]
-                    \DontPrintSemicolon
-                    \KwIn{vertex\_list: \KwSty{List [Vertex]}}
-                    diff\_list: \KwSty{List [int]} $\gets \emptyset$\;
-                    \ForEach{vertex $\in$ vertex\_list}{
-                        diff\_mul $\gets$ vertex.compute\_degree()\;
-                        \If{diff\_mul = 0} {
-                            continue\;
-                        } \Else {
-                            \If{$\lvert$ diff\_mul $\rvert \geq$ 2} {
-                                \Return{false}\;
-                            }
-                            \Else {
-                                diff\_list.add(diff\_mul)\;
-                            }
-                        }
-                    }
-                    \If{diff\_list.length = 2 $\cap$ diff\_list [0] $\times$ diff\_list [1] = -1} {
-                        \Return{true}\;
-                    } \Else{
-                        \Return{false}\;
-                    }
-                    \caption{IS\_EULERIAN}
-                \end{algorithm}
-            \end{minipage}
-        }
-    \endgroup
-\end{frame}
-
 \begin{frame}{Thuật toán tìm đường đi Euler}
     \begingroup
         \scalebox{0.65}{
@@ -824,113 +1033,6 @@
                         }
                     }
                     \caption{DFS\_VISIT}
-                \end{algorithm}
-            \end{minipage}
-        }
-    \endgroup
-\end{frame}
-
-\begin{frame}{{Thuật toán tìm đường đi Euler}}
-    
-    \begingroup
-        \scalebox{0.65}{
-            \begin{minipage}{1.2\linewidth}
-                \begin{algorithm}[H]
-                    \DontPrintSemicolon
-                    \KwIn{vertex\_list: \KwSty{List \lbrack Vertex \rbrack}, k: \KwSty{int}}
-                    start\_vertex $\gets$ null\;
-                    end\_vertex $\gets$ null\;
-                    \ForEach{vertex $\in$ vertex\_list}{
-                        \If{vertex.compute\_degree() = 1}{
-                            start\_vertex $\gets$ vertex\;
-                        }
-                        \If{vertex.compute\_degree() = -1}{
-                            end\_vertex $\gets$ vertex\;
-                        }
-                    }
-                    path: \KwSty{List \lbrack Edge \rbrack} $\gets \emptyset$\;
-                    path, all\_visited, end\_equal $\gets$ DFS\_VISIT(path=path, vertex=start\_vertex, end\_vertex=end\_vertex)\;
-                    origin\_string: \KwSty{str} $\gets$ ""\;
-                    \For{i $\gets$ 0 \KwTo path.length}{
-                        \If{i = 0} {
-                            origin\_string $\gets$ path[i].sequence\;
-                        } \Else{
-                            origin\_string $\gets$ origin\_string + path[i].sequence[k-1:]
-                        }
-                    }
-                    \Return{origin\_string}\;
-                    \caption{FIND\_EULERIAN\_PATH}\;
-                \end{algorithm}
-            \end{minipage}
-        }
-    \endgroup
-\end{frame}
-
-\begin{frame}{Thuật toán khởi tạo đồ thị de Bruijn}
-    \begingroup
-        \scalebox{0.3}{
-            \begin{minipage}{1.8\linewidth}
-                \begin{algorithm}[H]
-                    \DontPrintSemicolon
-                    \KwIn{seqs: \KwSty{List[str]}, k: \KwSty{int}}
-
-                    vertex\_list: \KwSty{List[Vertex]} $\gets \emptyset$\;
-                    vertex\_dict: \KwSty{Dict[str, Vertex]} $\gets \lbrace \rbrace$\;
-                    edge\_list: \KwSty{List[Edge]} $\gets \emptyset$\;
-                    edge\_dict: \KwSty{Dict[str, Edge]} $\gets \lbrace\rbrace$\;
-                    read\_list: \KwSty{List[Read]} $\gets \emptyset$\;
-
-                    \For{s $\gets$ 0 \KwTo seqs.length}{
-                        seq: \KwSty{str} $\gets$ seqs[s]\;
-                        read: \KwSty{Read} $\gets$ Read(sequence=seq, read\_id=s)\;
-                        read\_list.add(read)\; 
-                    }
-                    align\_read(min\_length=k)\;
-                    \ForEach{read $\in$ read\_list}{
-                        seq: \KwSty{str} $\gets$ read.sequence\;
-
-                        \For{i $\gets$ 0 \KwTo seq.length - k + 1}{
-                            k\_mer: \KwSty{str} $\gets$ seq[i:i+k]\;
-                            prefix: \KwSty{str} $\gets$ k\_mer[:k-1]\;
-                            suffix: \KwSty{str} $\gets$ k\_mer[1:]\;
-
-                            \If{prefix $\in$ vertex\_dict} {
-                                p\_vertex: \KwSty{Vertex} $\gets$ vertex\_dict[prefix]\;
-                            } \Else{
-                                p\_vertex: \KwSty{Vertex} $\gets$ new\_vertex(sequence=prefix)\;
-                            }
-
-                            \If{suffix $\in$ vertex\_dict} {
-                                s\_vertex: \KwSty{Vertex} $\gets$ vertex\_dict[suffix]\;
-                            } \Else{
-                                s\_vertex: \KwSty{Vertex} $\gets$ new\_vertex(sequence=suffix)\;
-                            }
-                            \If{k\_mer $\in$ edge\_dict} {
-                                edge: \KwSty{Edge} $\gets$ edge\_dict[k\_mer]\;
-                                determine\_edge\_multiplicities(read=read, edge=edge, i=i)\;
-                            } \Else {
-                                edge: \KwSty{Edge} $\gets$ new\_edge(in\_vertex=p\_vertex, out\_vertex=s\_vertex, sequence=k\_mer)\;
-                            }
-                            \If{edge $\notin$ read.edges} {
-                                read.edges.add(edge)\;
-                            }
-                            \If{read $\notin$ edge.reads}{
-                                edge.reads.add(read)\;
-                            }                            
-                            \If{read $\notin$ edge.position\_in\_read} {
-                                edge.position\_in\_read[read] $\gets$ [i]\;
-                            } \Else{
-                                edge.position\_in\_read[read].add(i)\;
-                            }
-                            \If{edge $\notin$ read.edge\_to\_positions} {
-                                read.edge\_to\_positions[edge] $\gets$ [i]\;
-                            } \Else{
-                                read.edge\_to\_positions[edge].add(i)\;
-                            }
-                            read.position\_to\_edge[i] $\gets$ edge\;
-                        }
-                    }
-                    \caption{INIT\_DE\_BRUIJN\_GRAPH}
                 \end{algorithm}
             \end{minipage}
         }
@@ -1054,106 +1156,6 @@
                     }
                     \Return{z}\;
                     \caption{MERGE\_MUL}
-                \end{algorithm}
-            \end{minipage}
-        }
-    \endgroup
-\end{frame}
-
-\begin{frame}{Thuật toán kiểm tra hai cạnh cùng bội có thể merge được không}
-    \begingroup
-        \scalebox{0.5}{
-            \begin{minipage}{1.8\linewidth}
-                \begin{algorithm}[H]
-                    \DontPrintSemicolon
-                    \KwIn{graph: \KwSty{Graph}, vertex\_list: \KwSty{List[Vertex]}}
-                    \While{vertex\_list.length > 0}{
-                        vertex: \KwSty{int} $\gets$ vertex\_list.pop(0)\;
-                        num\_in\_edge: \KwSty{int} $\gets$ vertex.in\_edges.length\;
-                        num\_out\_edge: \KwSty{int} $\gets$ vertex.out\_edges.length\;
-
-                        \If{abs(vertex.compute\_degree()) = 1} {
-                            continue\;
-                        }
-
-                        \If{num\_in\_edge = 0 $\cap$ num\_out\_edge = 0} {
-                            continue\;
-                        }
-
-                        in\_edges: \KwSty{List[Edge]} = vertex.in\_edges.copy()\;
-                        out\_edges: \KwSty{List[Edge]} = vertex.out\_edges.copy()\;
-
-                        \If{num\_in\_edge = num\_out\_edge} {
-                            \ForEach{x $\in$ in\_edges}{
-                                x\_reads $\gets$ x.reads.copy()\;
-                                \ForEach{y $\in$ out\_edges} {
-                                    \If{x.multiplicities = y.multiplicities} {
-                                        \For{read $\in$ x\_reads} {
-                                            \If{read $\in$ y.reads} {
-                                                \If{read.check\_consecutive\_edges(x=x, y=y)} {
-                                                    \If{graph.merge(x=x, y=y)} {
-                                                        graph.clean()\;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    graph.clean()
-                    \caption{MERGE\_EQUAL\_MULTIPLICITIES\_EDGES}
-                \end{algorithm}
-            \end{minipage}
-        }
-    \endgroup
-\end{frame}
-
-\begin{frame}{Thuật toán kiểm tra hai cạnh khác bội có thể merge được không}
-    \begingroup
-        \scalebox{0.5}{
-            \begin{minipage}{1.8\linewidth}
-                \begin{algorithm}[H]
-                    \DontPrintSemicolon
-                    \KwIn{graph: \KwSty{Graph}, vertex\_list: \KwSty{List[Vertex]}}
-                    \While{vertex\_list.length > 0}{
-                        vertex: \KwSty{int} $\gets$ vertex\_list.pop(0)\;
-                        num\_in\_edge: \KwSty{int} $\gets$ vertex.in\_edges.length\;
-                        num\_out\_edge: \KwSty{int} $\gets$ vertex.out\_edges.length\;
-
-                        \If{abs(vertex.compute\_degree()) = 1} {
-                            continue\;
-                        }
-
-                        \If{num\_in\_edge = 0 $\cap$ num\_out\_edge = 0} {
-                            continue\;
-                        }
-
-                        in\_edges: \KwSty{List[Edge]} = vertex.in\_edges.copy()\;
-                        out\_edges: \KwSty{List[Edge]} = vertex.out\_edges.copy()\;
-
-                        \If{num\_in\_edge = num\_out\_edge} {
-                            \ForEach{x $\in$ in\_edges}{
-                                x\_reads $\gets$ x.reads.copy()\;
-                                \ForEach{y $\in$ out\_edges} {
-                                    \If{x.multiplicities = y.multiplicities} {
-                                        \For{read $\in$ x\_reads} {
-                                            \If{read $\in$ y.reads} {
-                                                \If{read.check\_consecutive\_edges(x=x, y=y)} {
-                                                    \If{graph.merge\_mul(x=x, y=y)} {
-                                                        graph.clean()\;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    graph.clean()
-                    \caption{MERGE\_UNEQUAL\_MULTIPLICITIES\_EDGES}
                 \end{algorithm}
             \end{minipage}
         }
