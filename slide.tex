@@ -1088,6 +1088,78 @@
     \endgroup
 \end{frame}
 
+\begin{frame}{Thuật toán xác định bội số được merge}
+    \begingroup
+        \scalebox{0.35}{
+            \begin{minipage}{2\linewidth}
+                \begin{algorithm}[H]
+                    \DontPrintSemicolon
+                    \KwIn{graph: \KwSty{Graph}, x: \KwSty{Edge}, y: \KwSty{Edge}}
+                    min\_multiplicities: \KwSty{int} $\gets$ 0\;
+                    read\_to\_consecutive\_positions: \KwSty{Dict[Read, List[int]]} $\gets \emptyset$\;
+                    \ForEach{read $\in$ graph.read\_list}{
+                        consecutive\_pos: \KwSty{List[int]} $\gets$ read.get\_consecutive\_positions(x=x, y=y)\;
+                        \If{consecutive\_pos.length > 0} {
+                            read\_to\_consecutive\_positions[read] $\gets$ consecutive\_pos\;
+                        }
+                    }
+                    read\_to\_considered: \KwSty{Dict[Read, bool]} $\gets$ dict(zip(read\_to\_consecutive\_positions.keys(), [false] $\times$ read\_to\_consecutive\_positions.keys().length))\;
+                    \ForEach{read $\in$ read\_to\_consecutive\_positions}{
+                        considered\_reads $\gets$ filter(read: read\_to\_considered [read] is true)\;
+                        \If{considered\_reads.length = 0} {
+                            min\_multiplicities $\gets$ min\_multiplicities + read\_to\_consecutive\_positions[read].length\;
+                        } \Else {
+                            front\_of: \KwSty{List[Read]} $\gets \emptyset$\;
+                            \ForEach{fread $\in$ read.front\_of}{
+                                \If{fread $\in$ considered\_reads} {
+                                    front\_of.add(fread)\;
+                                }
+                            }
+                            behind\_of: \KwSty{List[Read]} $\gets \emptyset$\;
+                            \ForEach{bread $\in$ read.behind\_of}{
+                                \If{bread $\in$ considered\_reads} {
+                                    behind\_of.add(bread)\;
+                                }
+                            }
+                            positions: \KwSty{List[int]} $\gets$ read\_to\_consecutive\_positions[read]\;
+                            \ForEach{pos $\in$ positions}{
+                                coincide: \KwSty{bool} $\gets$ false\;
+                                \ForEach{fread $\in$ front\_of}{
+                                    over\_pos $\gets$ read.front\_of[fread]\;
+                                    \If{pos $\geq$ over\_pos[0]} {
+                                        \ForEach{fpos $\in$ read\_to\_consecutive\_positions[fread]}{
+                                            \If{fpos < over\_pos[1]} {
+                                                coincide $\gets$ true\;
+                                            }
+                                        }
+                                    }
+                                }
+                                \ForEach{bread $\in$ behind\_of}{
+                                    over\_pos $\gets$ read.behind\_of[bread]\;
+                                    \If{pos < over\_pos[1]} {
+                                        \ForEach{bpos $\in$ read\_to\_consecutive\_positions[bread]}{
+                                            \If{bpos $\geq$ over\_pos[0]} {
+                                                coincide $\gets$ true\;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                \If{!coincide} {
+                                    min\_multiplicities $\gets$ min\_multiplicities + 1\;
+                                }
+                            }
+                        }
+                        read\_to\_considered[read] $\gets$ true\;
+                    }
+                    \Return{min\_multiplicities}\;
+                    \caption{GET\_ACTUAL\_MERGED\_MULTIPLICITIES}  
+                \end{algorithm}
+            \end{minipage}
+        }
+    \endgroup
+\end{frame}
+
 \begin{frame}{Thuật toán merge các cạnh khác bội số}
     \begingroup
         \scalebox{0.3}{
@@ -1117,7 +1189,8 @@
                     } \Else{
                         z: \KwSty{Edge} $\gets$ new\_edge(in\_vertex=in\_vertex, out\_vertex=out\_vertex, sequence=seq)\;
                     }
-                    min\_multiplicities $\gets$ $\min$(x.multiplicities, y.multiplicities)\;
+                    %min\_multiplicities $\gets$ $\min$(x.multiplicities, y.multiplicities)\;
+                    min\_multiplicities $\gets$ graph.get\_actual\_merged\_multiplicities(x=x, y=y)\;
                     z.multiplicities $\gets$ min\_multiplicities\;
                     
                     x.multiplicities $\gets$ x.multiplicities - min\_multiplicities\;
