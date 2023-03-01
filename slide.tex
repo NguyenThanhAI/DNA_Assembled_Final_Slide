@@ -485,8 +485,11 @@
         IS\_EULERIAN()\;
         MERGE\_EQUAL\_MULTIPLICITIES\_EDGES()\;
         MERGE\_UNEQUAL\_MULTIPLICITIES\_EDGES()\;
-        IS\_EULERIAN()\;
-        FIND\_EULERIAN\_PATH()\;
+        \If{IS\_EULERIAN()} {
+            GET\_NUMBERS\_EULERIAN\_PATH()\;
+            FIND\_EULERIAN\_PATH()\;
+        }
+        
         \caption{MAIN}
     \end{algorithm}
     
@@ -1267,6 +1270,65 @@
                         graph.edge\_list.remove(edge)\;
                     }
                     \caption{CLEAN}
+                \end{algorithm}
+            \end{minipage}
+        }
+    \endgroup
+\end{frame}
+
+\begin{frame}{Thuật toán tính số đường đi Euler dùng định lý BEST}
+    \begingroup
+        \scalebox{0.4}{
+            \begin{minipage}{2.5\linewidth}
+                \begin{algorithm}[H]
+                    \DontPrintSemicolon
+                    \KwIn{graph: \KwSty{Graph}}
+                    vertex\_list: \KwSty{List[Vertex]} $\gets$ graph.vertex\_list\;
+                    vert\_to\_index: \KwSty{Dict[Vertex, int]} $\gets$ dict(zip(vertex\_list, range(vertex\_list.length)))\;
+                    adjacent\_matrix: \KwSty{Matrix} $\gets$ zeros(vertex\_list.length, vertex\_list.length)\;
+                    diagonal\_matrix: \KwSty{Matrix} $\gets$ zeros(vertex\_list.length, vertex\_list.length)\;
+
+                    start\_vertex: \KwSty{Vertex} $\gets$ null\;
+                    end\_vertex: \KwSty{Vertex} $\gets$ null\;
+
+                    \ForEach{vertex $\in$ vertex\_list}{
+                        \If{vertex.compute\_degree() = 1} {
+                            start\_vertex $\gets$ vertex\;
+                        }
+
+                        \If{vertex.compute\_degree() = -1} {
+                            end\_vertex $\gets$ vertex\;
+                        }
+
+                        out\_edges $\gets$ vertex.out\_edges\;
+                        \ForEach{edge $\in$ out\_edges} {
+                            out\_vertex $\gets$ edge.out\_vertex\;
+                            adjacent\_matrix[vertex\_to\_index[vertex], vertex\_to\_index[out\_vertex]] $\gets$ adjacent\_matrix[vertex\_to\_index[vertex], vertex\_to\_index[out\_vertex]] + edge.multiplicities\;
+                        }
+
+                        in\_edges $\gets$ vertex.in\_edges\;
+                        \ForEach{edge $\in$ in\_edges}{
+                            diagonal\_matrix[vertex\_to\_index[vertex], vertex\_to\_index[vertex]] $\gets$
+                        }
+                    }
+                    
+                    adjacent\_matrix[vertex\_to\_index[end\_vertex], vertex\_to\_index[start\_vertex]] $\gets$ adjacent\_matrix[vertex\_to\_index[end\_vertex], vertex\_to\_index[start\_vertex]] + 1\;
+                    diagonal\_matrix[vertex\_to\_index[start\_vertex], vertex\_to\_index[start\_vertex]] $\gets$ diagonal\_matrix[vertex\_to\_index[start\_vertex], vertex\_to\_index[start\_vertex]] + 1\;
+
+                    laplacian\_matrix: \KwSty{Matrix} $\gets$ diagonal\_matrix - adjacent\_matrix\;
+
+                    $t_i$ $\gets$ $\det$(laplacian\_matrix[1:, 1:])\;
+
+                    cumulative\_out\_degree: \KwSty{int} $\gets$ 1\;
+                    \ForEach{vertex $\in$ vertex\_list}{
+                        \If{vertex = end\_vertex} {
+                            cumulative\_out\_degree $\gets$ cumulative\_out\_degree $\times$ (vertex.compute\_out\_degree())!\;
+                            continue\;
+                        }
+                        cumulative\_out\_degree $\gets$ cumulative\_out\_degree $\times$ (vertex.compute\_out\_degree() - 1)!\;
+                    }
+                    \Return{$\lvert t_i \rvert \times$ cumulative\_out\_degree}\;
+                    \caption{GET\_NUMBERS\_EULERIAN\_PATH}
                 \end{algorithm}
             \end{minipage}
         }
