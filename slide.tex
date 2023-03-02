@@ -173,7 +173,7 @@
 \begin{frame}{Đồ thị de Bruijn}
     \begin{figure}[h!]
         \centering
-        \includegraphics[width=0.4\textwidth]{1.png}
+        \includegraphics[width=0.35\textwidth]{1.png}
         \caption{Một đồ thị de Bruijn cho chuỗi "0110101" với các đoạn chiều dài là 3.}
         \label{fig:1}
     \end{figure}
@@ -344,12 +344,12 @@
         \end{pmatrix}
     \end{equation*}
 
-    Tính định thức của ma trận này ta thu được giá trị $k=2$.
+    Tính định thức của ma trận bằng cách bỏ đi hàng $i$ và cột $i$ bất kỳ ta thu được giá trị $k=2$.
 
     Hơn nữa, nếu ta tính cả ba phần phụ đại số còn lại của $L(G)$, ta có thể thấy tất cả đều bằng 2.
 
-    Lý dotừ việc là tổng tất cả các hàng và cột đều bằng 0 và sẽ đúng cho tất cả các ma trận có tổng các hàng và cột đều bằng 0.
-    Chứng minh cho điều này được nêu trong \cite{fleischner1990eulerian}.
+    Lý do từ việc là tổng tất cả các hàng và cột đều bằng 0 và sẽ đúng cho tất cả các ma trận có tổng các hàng và cột đều bằng 0.
+    Chứng minh được nêu trong \cite{fleischner1990eulerian}.
 \end{frame}
 
 \begin{frame}{Định lý cây ma trận}
@@ -530,6 +530,20 @@
     \end{itemize}
 \end{frame}
 
+\begin{frame}{Các bước thực hiện chính}
+    \begin{enumerate}
+        \item Đọc các Read
+        \item Tiền xử lý, xác định các khoảng chồng lấn giữa các Read (quan trọng)
+        \item Xây dựng đồ thị de Bruijn và xác định bội số của các cạnh
+        \item Kiểm tra đồ thị có phải đồ thị Euler không
+        \item Thực hiện bài toán siêu đường đi Euler
+        \item Kiểm tra đồ thị mới có phải đồ thị Euler không
+        \item Tính số đường đi Euler có thể
+        \item Tìm đường đi Euler và dãy DNA gốc
+    \end{enumerate}
+    
+\end{frame}
+
 
 \begin{frame}{Thủ tục chương trình chính}
     \begin{algorithm}[H]
@@ -622,7 +636,7 @@
 
 \begin{frame}{Thuật toán kiểm tra hai cạnh cùng bội có thể merge được không}
     \begingroup
-        \scalebox{0.5}{
+        \scalebox{0.45}{
             \begin{minipage}{1.8\linewidth}
                 \begin{algorithm}[H]
                     \DontPrintSemicolon
@@ -673,7 +687,7 @@
 
 \begin{frame}{Thuật toán kiểm tra hai cạnh khác bội có thể merge được không}
     \begingroup
-        \scalebox{0.5}{
+        \scalebox{0.45}{
             \begin{minipage}{1.8\linewidth}
                 \begin{algorithm}[H]
                     \DontPrintSemicolon
@@ -842,7 +856,7 @@
 
 \begin{frame}{Thuật toán xác định bội cạnh}
     \begingroup
-        \scalebox{0.65}{
+        \scalebox{0.55}{
             \begin{minipage}{1.2\linewidth}
                 \begin{algorithm}[H]
                     \DontPrintSemicolon
@@ -910,7 +924,7 @@
 
 \begin{frame}{Thuật toán cập nhật vị trí các cạnh trong một Read khi x và y là liền kề}
     \begingroup
-        \scalebox{0.35}{
+        \scalebox{0.3}{
             \begin{minipage}{2.0\linewidth}
                 \begin{algorithm}[H]
                     \DontPrintSemicolon
@@ -987,7 +1001,7 @@
 
 \begin{frame}{Thuật toán cập nhật vị trí các cạnh trong một Read khi x là cạnh kết thúc Read}
     \begingroup
-        \scalebox{0.8}{
+        \scalebox{0.7}{
             \begin{minipage}{1.2\linewidth}
                 \begin{algorithm}[H]
                     \DontPrintSemicolon
@@ -1024,7 +1038,7 @@
 
 \begin{frame}{Thuật toán cập nhật vị trí các cạnh trong một Read khi y là cạnh bắt đầu Read}
     \begingroup
-        \scalebox{0.8}{
+        \scalebox{0.7}{
             \begin{minipage}{1.2\linewidth}
                 \begin{algorithm}[H]
                     \DontPrintSemicolon
@@ -1098,7 +1112,7 @@
     
 \begin{frame}{Thuật toán merge các cạnh cùng bội số}
     \begingroup
-        \scalebox{0.5}{
+        \scalebox{0.45}{
             \begin{minipage}{2\linewidth}
                 \begin{algorithm}[H]
                     \DontPrintSemicolon
@@ -1219,7 +1233,7 @@
 
 \begin{frame}{Thuật toán merge các cạnh khác bội số}
     \begingroup
-        \scalebox{0.3}{
+        \scalebox{0.27}{
             \begin{minipage}{2\linewidth}
                 \begin{algorithm}[H]
                     \DontPrintSemicolon
