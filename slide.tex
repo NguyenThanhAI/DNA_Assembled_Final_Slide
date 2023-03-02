@@ -154,7 +154,7 @@
 
     Giải trình tự bằng cách xây dựng đồ thị có hướng, tìm đường đi Euler trong đồ thị.
 
-    Do một đồ thị vô hướng có thể có nhiều đường đi Euler, ta quan tâm đến các phép biến đổi đồ thị sao cho đường đi Euler thu được biểu diễn chuỗi DNA thực sự ban đầu.
+    Do một đồ thị có hướng có thể có nhiều đường đi Euler, ta quan tâm đến các phép biến đổi đồ thị sao cho đường đi Euler thu được biểu diễn chuỗi DNA thực sự ban đầu.
 
     
 \end{frame}
@@ -243,7 +243,7 @@
 \begin{frame}
     \begin{figure}[h!]
         \centering
-        \includegraphics[width=0.6\textwidth]{3.png}
+        \includegraphics[width=0.5\textwidth]{3.png}
         \caption{Một đồ thị được xây dựng từ tập các đoạn đọc được $S$}
         \label{fig:3}
     \end{figure}
@@ -469,6 +469,48 @@
     Hơn nữa, đoạn (4) đi qua $GC$ sau khi từ $TG$ và kết thúc tại $CA$.
 \end{frame}
 
+\section{Giải trình tự DNA với Nanopore}
+
+\begin{frame}{Giải trình tự DNA với Nanopore}
+    Nanopore là một thiết bị có đường kính vài nguyên tử với hy vọng có thể đọc cả một đoạn DNA đầy đủ hoạt động theo cơ chế điện học.
+
+    Video minh họa: \url{https://www.youtube.com/watch?v=E9-Rm5AoZGw}
+\end{frame}
+
+\begin{frame}{Giải trình tự DNA với Nanopore}
+    \begin{figure}
+        \centering
+        \begin{minipage}{.45\textwidth}
+        \centering
+        \includegraphics[width=.75\linewidth]{figures/nanopore_1.jpg}
+        \end{minipage}
+        \begin{minipage}{.45\textwidth}
+        \centering
+        \includegraphics[width=.75\linewidth]{figures/nanopore_2.png}
+        \end{minipage}
+        \caption{Minh họa Nanopore}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Giải trình tự DNA với Nanopore}
+
+    Ưu điểm:
+
+    \begin{itemize}
+        \item Đọc được một đoạn dài hơn rất nhiều so với phương pháp trước đây, có hy vọng sẽ đọc được toàn bộ chuỗi DNA.
+    \end{itemize}
+
+    Nhược điểm:
+
+    \begin{itemize}
+        \item Thực tế thì mỗi đoạn DNA đọc được chỉ dài khoảng 100000 nucleotide.
+        \item Quá trình đọc có lỗi.
+        \item Khó xác định là chuỗi bên gốc hay bên kia trong chuỗi xoắn kép được đọc.
+        \item Chiều đọc có thể bị ngược nhau trong các lần đọc.
+    \end{itemize}
+    
+\end{frame}
+
 \section{Thực nghiệm}
 
 \begin{frame}{Minh họa quá trình giải trình tự}
@@ -478,6 +520,16 @@
         \caption{Minh họa quá trình giải trình tự}
     \end{figure}
 \end{frame}
+
+
+\begin{frame}{Giả thiết}
+    \begin{itemize}
+        \item Các đoạn Reads đọc được không có lỗi
+        \item Các Read đều đến từ một bên của chuỗi DNA ban đầu
+        \item Mỗi một Read sẽ có đoạn giao đủ dài với một vài Read khác
+    \end{itemize}
+\end{frame}
+
 
 \begin{frame}{Thủ tục chương trình chính}
     \begin{algorithm}[H]
