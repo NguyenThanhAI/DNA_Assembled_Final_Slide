@@ -170,6 +170,15 @@
 
 \end{frame}
 
+
+\begin{frame}{Đồ thị de Bruijn}
+    \begin{figure}[h!]
+        \centering
+        \includegraphics[height=0.75\textheight]{figures/de_Bruijn_graph_from_short_read_example.png}
+        \caption{Ví dụ đồ thị de Bruijn được tạo từ các Reads}
+    \end{figure}
+\end{frame}
+
 \begin{frame}{Đồ thị de Bruijn}
     \begin{figure}[h!]
         \centering
@@ -530,9 +539,25 @@
     \end{itemize}
 \end{frame}
 
+\begin{frame}
+    \begin{figure}[h!]
+        \centering
+        \includegraphics[width=0.75\textwidth]{figures/de_Bruijn_graph_with_repeat_1.png}
+        \caption{Minh họa đồ thị de Bruijn có các đoạn lặp lại}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \begin{figure}[h!]
+        \centering
+        \includegraphics[width=0.75\textwidth]{figures/de_Bruijn_graph_with_repeat_2.png}
+        \caption{Minh họa đồ thị de Bruijn có các đoạn lặp lại}
+    \end{figure}
+\end{frame}
+
 \begin{frame}{Các bước thực hiện chính}
     \begin{enumerate}
-        \item Đọc các Read
+        \item Đọc các Read (định dạng .fastq)
         \item Tiền xử lý, xác định các khoảng chồng lấn giữa các Read (quan trọng)
         \item Xây dựng đồ thị de Bruijn và xác định bội số của các cạnh
         \item Kiểm tra đồ thị có phải đồ thị Euler không
@@ -542,6 +567,15 @@
         \item Tìm đường đi Euler và dãy DNA gốc
     \end{enumerate}
     
+\end{frame}
+
+\begin{frame}{Chiến lược giải bài toán siêu đường đi Euler}
+    Chia làm 2 giai đoạn tách biệt:
+
+    \begin{enumerate}
+        \item Chỉ gộp các cạnh đơn với nhau và các các cạnh bội cùng bội số tại một đỉnh chỉ có duy nhất một cạnh vào và một cạnh ra.
+        \item Thực hiện gộp các cạnh có khác bội số và các cạnh đơn phát sinh.
+    \end{enumerate}
 \end{frame}
 
 
