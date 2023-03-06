@@ -148,16 +148,104 @@
 
 \section{Các định nghĩa trong lý thuyết đồ thị}
 
+\begin{frame}{Một số khái niệm trong lý thuyết đồ thị}
+    Chu trình Euler (Eulerian cycle) là chu trình đi xuất phát từ 1 đỉnh, đi qua tất cả các cạnh của đồ thị mỗi cạnh đúng 1 lần và quay lại đỉnh xuất phát.
+
+    Đường đi Euler (Eulerian path) là đường đi qua tất cả các cạnh của đồ thị, mỗi cạnh đúng 1 lần.
+
+\end{frame}
+\begin{frame}{Một số khái niệm trong lý thuyết đồ thị}
+    Đồ thị có hướng liên thông $G=(V,E)$ có chu trình Euler khi và chỉ khi mọi đỉnh của nó có bán bậc ra bằng bán bậc vào: $\mathrm{deg}^{+}(v)=\mathrm{deg}^{-}(v) (\forall v \in V)$.
+
+    Đồ thị có hướng liên thông $G=(V,E)$ có đường đi Euler nhưng không có chu trình Euler nếu tồn tại đúng hai đỉnh $u, v \in V$ sao cho $\mathrm{deg}^{+}(u) - \mathrm{deg}^{-}(u)=\mathrm{deg}^{-}(v) - \mathrm{deg}^{+}(v)=1$,
+    còn tất cả những đỉnh khác $u$ và $v$ đều có bán bậc ra bằng bán bậc vào.
+\end{frame}
+
+\begin{frame}{Một số khái niệm trong lý thuyết đồ thị}
+    \begin{figure}[h!]
+        \centering
+        \includegraphics[height=0.6\textheight]{figures/eulerian_path_example.png}
+        \caption{Một đồ thị có đường đi Euler 0 —> 1 —> 2 —> 3 —> 0 —> 5 —> 4 —> 3 —> 1 —> 4}
+    \end{figure}
+\end{frame}
+
+\section{Giải trình tự và lắp ráp các đoạn DNA}
+
+\begin{frame}{Cấu trúc của một chuỗi DNA}
+    \begin{columns}
+        \begin{column}{0.47\textwidth}
+            Tất cả các đoạn DNA bao gồm bốn loại ba-zơ tạo nên: Adenine (A), Thymine (T), Guanine (G) và Cystosine (C).
+
+            Cấu hình của toàn bộ bộ gen dựa trên một loạt các chuỗi được đọc từ bộ gen đó.
+
+            Một chuỗi DNA đầy đủ bao gồm hàng triệu nucleotide nên không có cách nào để nắm được toàn bộ cấu trúc một cách rõ ràng.
+        \end{column}
+        \begin{column}{0.47\textwidth}
+            \begin{figure}[h!]
+                \centering
+                \includegraphics[height=0.75\textheight]{figures/dna_strands_example.jpg}
+                \caption{Hình ảnh minh họa một DNA}
+            \end{figure}
+        \end{column}
+    \end{columns}
+        
+        
+\end{frame}
+
+
+\begin{frame}{Các công trình liên quan giải trình tự DNA}
+
+    \begin{columns}
+        \begin{column}{0.47\textwidth}
+            Quá trình giải trình tự DNA là thu được một loạt các đoạn DNA (Reads) và công việc là xây dựng lại chuỗi DNA ban đầu.
+
+            Do một chuỗi DNA đầy đủ có độ dài lên đến hàng tỷ nucleotide nên không có cách nào đọc được toàn bộ chuỗi DNA ban đầu.
+
+            Ta chỉ có thể đọc được các đoạn DNA ngắn từ 500 đến 1200 nucleotide.
+        \end{column}
+        \begin{column}{0.47\textwidth}
+            \begin{figure}[h!]
+                \centering
+                \includegraphics[height=0.75\textheight]{figures/dna_reads_example.png}
+                \caption{Minh họa quá trình đọc một chuỗi DNA}
+            \end{figure}
+        \end{column}
+    \end{columns}
+    
+\end{frame}
+
+\begin{frame}{Những khó khăn trong quá trình lắp ráp}
+    Tỷ lệ sai này khoảng 1 \% đến 3 \% của DNA do máy giải trình tự tạo ra
+
+    Chuỗi DNA có cấu trúc xoắn kép.
+
+    Bộ gen của sinh vật nói chung có một lượng lớn các chuỗi lặp đi lặp lại nhiều lần.
+
+    Ví dụ, ta xét một bộ gen cụ thể có chuỗi lặp lại có độ dài 2000 nucleotide. Hiện nay không có một máy giải trình tự nào có thể đọc được một đoạn DNA co độ dài như vậy, vì vậy không có cách nào để đọc toàn bộ đoạn lặp lại.
+
+\end{frame}
+
 \begin{frame}{Phương pháp tiếp cận lý thuyết đồ thị giải trình tự DNA}
 
-    Một đường đi Euler là một đường đi đi qua tất cả các cạnh trong đồ thị và mỗi cạnh chỉ đi qua một và chỉ một lần (cạnh đơn).
 
-    Giải trình tự bằng cách xây dựng đồ thị có hướng, tìm đường đi Euler trong đồ thị.
+    Các công trình trước đây thường dựa trên cách tiếp cận "overlap-layout-concensus".
+
+    \cite{idury1995new} đã đề xuất giải trình tự bằng cách xây dựng đồ thị có hướng, tìm đường đi Euler trong đồ thị.
+
+    Cụ thể, \cite{idury1995new} sử dụng de Bruijn dựa trên các đoạn DNA có đội dài là $k$ (một số tài liệu gọi là k-mers).
+    Các đỉnh được gán nhãn bởi các đoạn DNA có độ dài là $k-1$, các cạnh được gán nhãn bởi các đoạn DNA có độ dài là $k$.
+\end{frame}
+
+\begin{frame}{Phương pháp tiếp cận lý thuyết đồ thị giải trình tự DNA}
+
+    Để giải trình tự DNA, ta tìm đường đi Euler trong đồ thị de Bruijn xây dựng được.
 
     Do một đồ thị có hướng có thể có nhiều đường đi Euler, ta quan tâm đến các phép biến đổi đồ thị sao cho đường đi Euler thu được biểu diễn chuỗi DNA thực sự ban đầu.
 
     
 \end{frame}
+
+\section{Xây dựng chuỗi DNA với đồ thị de Bruijn}
 
 \begin{frame}{Đồ thị de Bruijn}
     Đồ thị de Bruijn là một đồ thị có hướng với các đỉnh biểu diễn các chuỗi ký tự từ bảng chữ cái và các cạnh được biểu diễn bắt đầu bằng chuỗi biểu diễn đỉnh bắt đầu và kết thúc bằng chuỗi biểu diễn đỉnh kết thúc.
@@ -166,7 +254,7 @@
 
     Mỗi đỉnh được gán nhãn bởi một đoạn có chiều dài $k-1$ và cạnh có hướng tồn tại giữa hai đỉnh đại diện cho một trong đoạn có chiều dài $k$.
 
-    Cụ thể, ký hiệu đầu tiên trong đoạn xuất phát từ đỉnh gửi cạnh và tương tự, ký tự cuối cùng biểu diễn đỉnh nhận.
+    $k-1$ ký tự trong đoạn biểu diễn đỉnh bắt đầu cạnh và tương tự, $k-1$ ký tự cuối cùng biểu diễn đỉnh nhận.
 
 \end{frame}
 
@@ -194,39 +282,6 @@
     Hình \ref{fig:1} cho thấy đồ thị de Bruijn trùng với chuỗi này.
 \end{frame}
 
-\section{Giải trình tự và lắp ráp các đoạn DNA}
-
-\begin{frame}{Giải trình tự và lắp ráp các đoạn DNA}
-    Tất cả các đoạn DNA bao gồm bốn loại ba-zơ tạo nên: Adenine (A), Thymine (T), Guanine (G) và Cystosine (C).
-
-    Cấu hình của toàn bộ bộ gen dựa trên một loạt các chuỗi được đọc từ bộ gen đó.
-
-    Một chuỗi DNA đầy đủ bao gồm hàng triệu nucleotide nên không có cách nào để nắm được toàn bộ cấu trúc một cách rõ ràng.
-\end{frame}
-
-\begin{frame}{Những khó khăn trong quá trình lắp ráp}
-    Tỷ lệ sai này khoảng 1 \% đến 3 \% của DNA do máy giải trình tự tạo ra
-
-    Chuỗi DNA có cấu trúc xoắn kép.
-
-    Bộ gen của sinh vật nói chung có một lượng lớn các chuỗi lặp đi lặp lại nhiều lần.
-
-    Ví dụ, ta xét một bộ gen cụ thể có chuỗi lặp lại có độ dài 2000 nucleotide. Ngày nay không có một máy giải trình tự nào có thể đọc được một đoạn DNA co độ dài như vậy, vì vậy không có cách nào để đọc toàn bộ đoạn lặp lại.
-
-    Một biện pháp khắc phục là sử dụng "overlap-layout-concensus".
-\end{frame}
-
-\section{Xây dựng chuỗi DNA với đồ thị de Bruijn}
-
-\begin{frame}{Xây dựng chuỗi DNA với đồ thị de Bruijn}
-    \cite{idury1995new} đã đề xuất cách tiếp cận tương tự trong lĩnh vực lắp ráp các đoạn DNA sử dụng phương pháp tiếp cận lý thuyết đồ thị.
-
-    Các tác giả đã định nghĩa các quy tắc để xây dựng một đồ thị có hướng dựa trên các đoạn DNA.
-
-    Các quy tắc này là để xây dựng một đồ thị de Bruijn dựa trên các đoạn DNA có độ dài $k$.
-
-    Đồ thị có các đỉnh được gán nhãn bằng một đoạn có độ dài là $k-1$, các cạnh được gán nhãn bằng đoạn có độ dài $k$, kết nối hai đỉnh kề trong chuỗi.
-\end{frame}
 
 \begin{frame}
     \begin{figure}[h!]
