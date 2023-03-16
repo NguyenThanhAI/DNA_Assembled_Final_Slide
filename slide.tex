@@ -110,7 +110,7 @@
     Nguyễn Chí Thanh & Vũ Ngọc Đại \\
     \footnotesize \href{mailto:nguyenchithanh\_sdh21@hus.edu.vn}{nguyenchithanh\_sdh21@hus.edu.vn} & \footnotesize \href{mailto:vungocdai\_sdh21@hus.edu.vn}{vungocdai\_sdh21@hus.edu.vn} \\
     Vũ Minh Hưng & Lê Diệu Thúy \\
-    \footnotesize \href{mailto:nguyenchithanh\_sdh21@hus.edu.vn}{nguyenchithanh\_sdh21@hus.edu.vn} & \footnotesize \href{mailto:nguyenchithanh\_sdh21@hus.edu.vn}{nguyenchithanh\_sdh21@hus.edu.vn}
+    \footnotesize \href{mailto:vuminhhung\_sdh21@hus.edu.vn}{vuminhhung\_sdh21@hus.edu.vn} & \footnotesize \href{mailto:ledieuthuy\_sdh21@hus.edu.vn}{ledieuthuy\_sdh21@hus.edu.vn}
 \end{tabular}
 \vspace{-4ex}}
 
@@ -459,16 +459,31 @@
 \end{frame}
 
 \begin{frame}{Phép tách rời $x, y$}
-
+    \begin{columns}
+        
+    
+    \begin{column}{0.47\textwidth}
+        
+    
     Có thể được thực hiện trong trường hợp cạnh không có bội số trong đồ thị $G$ đã cho.
     
     Nếu ta có hai cạnh kề nhau $x$ và $y$ trong đồ thị $G$ và ba tập Read đủ từ $\mathcal{P}$, một trong số đó có cả hai cạnh liên tiếp, một tập kết thúc với $x$ và một bắt đầu với $y$, phép tách này được thực hiện. Cụ thể, đỉnh nối với hai cạnh bị kéo ra xa, tạo ra một cạnh mới $z$.
 
+    \end{column}
+
+    \begin{column}{0.47\textwidth}
+        
+
     \begin{figure}[h!]
         \centering
-        \includegraphics[width=0.6\textwidth]{figures/xy_detachment.png}
+        \includegraphics[height=0.7\textheight]{figures/xy_detachment.png}
         \caption{Minh họa phép tách rời $x, y$ \cite{pevzner2001new}}
     \end{figure}
+
+    \end{column}
+
+
+    \end{columns}
 \end{frame}
 
 \begin{frame}{Phép tách rời $x, y$}
@@ -506,31 +521,45 @@
 \end{frame}
 
 \begin{frame}{Ví dụ}
-    Giả sử ta có các đoạn sau: (1) $ATGG$, (2) $TGGCG$, (3) $GGCGTG$ và (4) $CGTGCA$.
 
-    Với những đoạn này, có hai phép tách rời cạnh đơn quan trọng ta có thể thực hiện và vẫn duy gì sự tương đương với đồ thị ban đầu.
+    \begin{columns}
+        \begin{column}{0.47\textwidth}
+            Giả sử ta có các đoạn sau: (1) $ATGG$, (2) $TGGCG$, (3) $GGCGTG$ và (4) $CGTGCA$.
 
-    Phép biến đổi này được thể hiện trong hình \ref{fig:8}.
+        Với những đoạn này, có hai phép tách rời cạnh đơn quan trọng ta có thể thực hiện và vẫn duy gì sự tương đương với đồ thị ban đầu.
+
+        Phép biến đổi này được thể hiện trong hình \ref{fig:8}.
+        \end{column}
+        \begin{column}{0.47\textwidth}
+            \begin{figure}[h!]
+                \centering
+                \includegraphics[height=0.6\textheight]{3.png}
+                \caption{Một đồ thị được xây dựng từ tập các đoạn đọc được $S$}
+                \label{fig:3}
+            \end{figure}
+        \end{column}
+    \end{columns}
 
     
 \end{frame}
 
 \begin{frame}{Ví dụ}
-    \begin{figure}[h!]
-        \centering
-        \includegraphics[width=0.5\textwidth]{8.png}
-        \caption{Đồ thị được tạo ra sau hai phép tách rời trên đồ thị trong hình \ref{fig:3}.}
-        \label{fig:8}
-    \end{figure}
+    \begin{columns}
+        \begin{column}{0.47\textwidth}
+            Phép tách đầu tiên diễn ra tại đỉnh $TG$. Đoạn (1) đi từ $AT$ đến $GG$ qua đỉnh $TG$, trong khi các đoạn (3) và (4) đi qua $TG$ từ $GT$ rồi chuyển sang $GC$.
 
-    
-\end{frame}
-
-\begin{frame}{Ví dụ}
-    Phép tách đầu tiên diễn ra tại đỉnh $TG$. Đoạn (1) đi từ $AT$ đến $GG$ qua đỉnh $TG$, trong khi các đoạn (3) và (4) đi qua $TG$ từ $GT$ rồi chuyển sang $GC$.
-
-    Phép tách quan trọng thứ hai diễn ra tại đỉnh $GC$. Tại đây, cả đoạn (2) và (3) đều đi qua $GC$ từ $GG$ rồi đến $CG$. 
-    Hơn nữa, đoạn (4) đi qua $GC$ sau khi từ $TG$ và kết thúc tại $CA$.
+            Phép tách quan trọng thứ hai diễn ra tại đỉnh $GC$. Tại đây, cả đoạn (2) và (3) đều đi qua $GC$ từ $GG$ rồi đến $CG$. 
+            Hơn nữa, đoạn (4) đi qua $GC$ sau khi từ $TG$ và kết thúc tại $CA$.
+        \end{column}
+        \begin{column}{0.47\textwidth}
+            \begin{figure}[h!]
+                \centering
+                \includegraphics[height=0.6\textheight]{8.png}
+                \caption{Đồ thị được tạo ra sau hai phép tách rời trên đồ thị trong hình \ref{fig:3}.}
+                \label{fig:8}
+            \end{figure}
+        \end{column}
+    \end{columns}
 \end{frame}
 
 \section{Giải trình tự DNA với Nanopore}
